@@ -118,6 +118,17 @@
         </fieldset>
       </fieldset>
     </div>
+    
+    <!-- New Section: Trip Type -->
+    <fieldset>
+      <legend>Trip Type</legend>
+      <label>
+        <input type="radio" name="tripType" value="oneway" checked> One-Way
+      </label>
+      <label>
+        <input type="radio" name="tripType" value="roundtrip"> Round Trip
+      </label>
+    </fieldset>
 
     <button type="button" onclick="calculateTotal()">Calculate Total</button>
   </form>
@@ -212,6 +223,12 @@
         if (usualCover && usualCover.value === 'no') {
           total += insuranceValue * 0.0015;
         }
+      }
+      
+      // New: Trip Type adjustment
+      const tripType = document.querySelector('input[name="tripType"]:checked');
+      if (tripType && tripType.value === 'roundtrip') {
+        total *= 2;
       }
 
       // Display the total in GBP
