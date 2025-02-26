@@ -29,10 +29,8 @@
                 
                 let numVans = parseInt(document.getElementById("numVans").value) || 0;
                 let numPeople = parseInt(document.getElementById("numPeople").value) || 0;
-                let surgeResponse = document.querySelector('input[name="surgeResponse"]:checked').value;
                 
                 total += (numVans * 1000) + (numPeople * 500);
-                total += (surgeResponse === "yes") ? 400 : 0;
             }
             
             // Second Person Requirement
@@ -73,9 +71,6 @@
             <input type="number" id="numVans" min="0" value="0"><br><br>
             <label>How many additional people are being sent for this job?</label>
             <input type="number" id="numPeople" min="0" value="0"><br><br>
-            <label>Was this part of a surge response?</label><br>
-            <input type="radio" name="surgeResponse" value="yes"> Yes
-            <input type="radio" name="surgeResponse" value="no" checked> No<br><br>
         </div>
         
         <div id="second-person-section">
