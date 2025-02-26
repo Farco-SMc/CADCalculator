@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection, Assessment and Delivery Pricing</title>
+    <script>
+        function calculatePrice() {
+            let total = 0;
+            
+            // Collection/Delivery Route
+            let route = document.querySelector('input[name="route"]:checked').value;
+            let vansSection = document.getElementById("dedicated-collection");
+            let secondPersonSection = document.getElementById("second-person-section");
+            let itemSection = document.getElementById("item-section");
+            
+            if (route === "yes") {
+                total += 90;
+                vansSection.style.display = "none";
+                secondPersonSection.style.display = "block";
+                itemSection.style.display = "block";
+            } else {
+                vansSection.style.display = "block";
+                secondPersonSection.style.display = "none";
+                itemSection.style.display = "none";
+                
+                let numVans = parseInt(document.getElementById("numVans").value) || 0;
+                let numPeople = parseInt(document.getElementById("numPeople").value) || 0;
+                total += (numVans * 1000) + (numPeople * 500);
+            }
+            
+            // Second Person Requirement
+            if (route === "yes") {
+                let secondPerson = document.querySelector('input[name="secondPerson"]:checked').value;
+                let secondPersonCost = {"no": 0, "advisable": 250, "essential": 500};
+                total += secondPersonCost[secondPerson];
+                
+                // Item Type and Count
+                let itemType = document.getElementById("itemType").value;
+                let itemCount = parseInt(document.getElementById("itemCount").value) || 0;
+                let additionalCost = 0;
+                
+                if (itemCount > 1) {
+                    let costMultiplier = (secondPerson === "no") ? {"artwork": 10, "object": 10, "furniture": 20, "mixed": 20} : {"artwork": 25, "object": 25, "furniture": 25, "mixed": 25};
+                    additionalCost = (itemCount - 1) * costMultiplier[itemType];
+                }
+                total += additionalCost;
+            }
+            
+            document.getElementById("result").innerText = `Total Price: £${total}`;
+        }
+    </script>
+</head>
+<body>
+    <h2>Collection, Assessment and Delivery Pricing</h2>
+    <form onsubmit="event.preventDefault(); calculatePrice();">
+        <label>Is collection/delivery on a normal route?</label><br>
+        <input type="radio" name="route" value="yes" checked onclick="calculatePrice()"> Yes
+        <input type="radio" name="route" value="no" onclick="calculatePrice()"> No<br><br>
+        
+        <div id="dedicated-collection" style="display: none;">
+            <label>How many vans are being sent as part of a dedicated collection for this job?</label>
+            <input type="number" id="numVans" min="0" value="0"><br><br>
+            <label>How many additional people are being sent for this job?</label>
+            <input type="number" id="numPeople" min="0" value="0"><br><br>
+        </div>
+        
+        <div id="second-person-section">
+            <label>Is a second person required?</label><br>
+            <input type="radio" name="secondPerson" value="no" checked> No
+            <input type="radio" name="secondPerson" value="advisable"> Advisable
+            <input type="radio" name="secondPerson" value="essential"> Essential<br><br>
+        </div>
+        
+        <div id="item-section">
+            <label>What type of item/s are being collected?</label>
+            <select id="itemType">
+                <option value="artwork">Artwork</option>
+                <option value="object">Objects</option>
+                <option value="furniture">Furniture</option>
+                <option value="mixed">Mixed</option>
+            </select><br><br>
+            
+            <label>How many item/s are being collected?</label>
+            <input type="number" id="itemCount" min="1" value="1"><br><br>
+        </div>
+        
+        <button type="submit">Calculate Price</button>
+    </form>
+    <h3 id="result">Total Price: £0</h3>
+</body>
+</html>
