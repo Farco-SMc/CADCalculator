@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collection, Assessment and Delivery Pricing</title>
+    <title>Collection, Assessment and Delivery Calculator</title>
     <script>
         function calculatePrice() {
             let total = 0;
@@ -13,20 +13,26 @@
             let vansSection = document.getElementById("dedicated-collection");
             let secondPersonSection = document.getElementById("second-person-section");
             let itemSection = document.getElementById("item-section");
+            let surgeSection = document.getElementById("surge-response-section");
             
             if (route === "yes") {
                 total += 90;
                 vansSection.style.display = "none";
                 secondPersonSection.style.display = "block";
                 itemSection.style.display = "block";
+                surgeSection.style.display = "none";
             } else {
                 vansSection.style.display = "block";
                 secondPersonSection.style.display = "none";
                 itemSection.style.display = "none";
+                surgeSection.style.display = "block";
                 
                 let numVans = parseInt(document.getElementById("numVans").value) || 0;
                 let numPeople = parseInt(document.getElementById("numPeople").value) || 0;
+                let surgeResponse = document.querySelector('input[name="surgeResponse"]:checked').value;
+                
                 total += (numVans * 1000) + (numPeople * 500);
+                total += (surgeResponse === "yes") ? 400 : 0;
             }
             
             // Second Person Requirement
@@ -52,7 +58,7 @@
     </script>
 </head>
 <body>
-    <h2>Collection, Assessment and Delivery Pricing</h2>
+    <h2>Collection, Assessment and Delivery Calculator</h2>
     <form onsubmit="event.preventDefault(); calculatePrice();">
         <label>Is collection/delivery on a normal route?</label><br>
         <input type="radio" name="route" value="yes" checked onclick="calculatePrice()"> Yes
@@ -63,6 +69,9 @@
             <input type="number" id="numVans" min="0" value="0"><br><br>
             <label>How many additional people are being sent for this job?</label>
             <input type="number" id="numPeople" min="0" value="0"><br><br>
+            <label>Was this part of a surge response?</label><br>
+            <input type="radio" name="surgeResponse" value="yes"> Yes
+            <input type="radio" name="surgeResponse" value="no" checked> No<br><br>
         </div>
         
         <div id="second-person-section">
@@ -74,6 +83,28 @@
         
         <div id="item-section">
             <label>What type of item/s are being collected?</label>
+            <select id="itemType">
+                <option value="artwork">Artwork</option>
+                <option value="object">Objects</option>
+                <option value="furniture">Furniture</option>
+                <option value="mixed">Mixed</option>
+            </select><br><br>
+            
+            <label>How many item/s are being collected?</label>
+            <input type="number" id="itemCount" min="1" value="1"><br><br>
+        </div>
+
+         <div id="surge-response-section">
+            <label>Was this collection part of a surge response?</label><br>
+            <input type="radio" name="finalSurgeResponse" value="yes"> Yes
+            <input type="radio" name="finalSurgeResponse" value="no" checked> No<br><br>
+        </div>
+        
+        <button type="submit">Calculate Price</button>
+    </form>
+    <h3 id="result">Total Price: £0</h3>
+</body>
+</html>
             <select id="itemType">
                 <option value="artwork">Artwork</option>
                 <option value="object">Objects</option>
