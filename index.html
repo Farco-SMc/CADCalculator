@@ -13,225 +13,348 @@
 <body>
   <h1>Collection and Delivery Calculator</h1>
   <form id="calculatorForm">
-    <!-- Q1: Normal Route -->
+    <!-- Client Type Section -->
     <fieldset>
-      <legend>Is collection/delivery on a normal route?</legend>
+      <legend>Client Type</legend>
       <label>
-        <input type="radio" name="normalRoute" value="yes"> Yes
+        <input type="checkbox" name="clientType" value="private" id="clientPrivate">
+        Private Client
       </label>
       <label>
-        <input type="radio" name="normalRoute" value="no"> No
+        <input type="checkbox" name="clientType" value="insurance" id="clientInsurance">
+        Insurance
       </label>
     </fieldset>
 
-    <!-- Dedicated collection section (shown when normalRoute = no) -->
-    <div id="dedicatedCollection" class="hidden">
+    <!-- Private Client Section -->
+    <div id="privateSection" class="hidden">
       <fieldset>
-        <legend>Dedicated Collection Details</legend>
+        <legend>Private Client Details</legend>
         <label>
-          How many vans are being sent as part of a dedicated collection for this job?
-          <input type="number" id="numVans" min="0" value="0">
+          What is the total value of the items to be collected?
+          <select id="privateTotalValue">
+            <option value="">Select...</option>
+            <option value="0-10000">£0 - £10,000</option>
+            <option value="10001-20000">£10,001 - £20,000</option>
+            <option value="20001-30000">£20,001 - £30,000</option>
+            <option value="30001-40000">£30,001 - £40,000</option>
+            <option value="40001-50000">£40,001 - £50,000</option>
+            <option value="50000plus">£50,000+</option>
+          </select>
         </label>
         <label>
-          How many additional people are being sent for this job?
-          <input type="number" id="numPeople" min="0" value="0">
+          How many items are being collected?
+          <input type="number" id="privateItemCount" min="1" value="1">
+        </label>
+        <label>
+          What type of item/s are being collected?
+          <br>
+          <input type="radio" name="privateItemType" value="artwork"> Artwork
+          <input type="radio" name="privateItemType" value="object"> Object
+          <input type="radio" name="privateItemType" value="furniture"> Furniture
+          <input type="radio" name="privateItemType" value="mixed"> Mixed
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Second Person Required for Collection</legend>
+        <label>
+          <input type="radio" name="privateSecondPerson" value="no" checked> No
+          <input type="radio" name="privateSecondPerson" value="advisable"> Advisable
+          <input type="radio" name="privateSecondPerson" value="essential"> Essential
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Crate Requirement</legend>
+        <label>
+          Is a crate required?
+          <br>
+          <input type="radio" name="privateCrateRequired" value="no" checked> No
+          <input type="radio" name="privateCrateRequired" value="yes"> Yes
+        </label>
+      </fieldset>
+      <fieldset id="privateCrateOptions" class="hidden">
+        <legend>Crate Options</legend>
+        <label>
+          Select crate type:
+          <br>
+          <input type="radio" name="privateCrateType" value="inhouse"> In-house
+          <input type="radio" name="privateCrateType" value="bespoke"> Bespoke
+        </label>
+      </fieldset>
+      <!-- New Trip Type Section -->
+      <fieldset>
+        <legend>Trip Type</legend>
+        <label>
+          <input type="radio" name="privateTripType" value="oneway" checked> One-way
+        </label>
+        <label>
+          <input type="radio" name="privateTripType" value="roundtrip"> Round Trip
         </label>
       </fieldset>
     </div>
 
-    <!-- Standard route section (shown when normalRoute = yes) -->
-    <div id="standardFields" class="hidden">
-      <!-- Q2: Second Person Required -->
-      <fieldset>
-        <legend>Is a second person required?</legend>
-        <label>
-          <input type="radio" name="secondPerson" value="no"> No
-        </label>
-        <label>
-          <input type="radio" name="secondPerson" value="advisable"> Advisable
-        </label>
-        <label>
-          <input type="radio" name="secondPerson" value="essential"> Essential
-        </label>
-      </fieldset>
-
-      <!-- Q3: Items Collected -->
-      <fieldset>
-        <legend>What type of item/s are being collected?</legend>
-        <label>
-          <input type="radio" name="itemType" value="artwork"> Artwork
-        </label>
-        <label>
-          <input type="radio" name="itemType" value="objects"> Objects
-        </label>
-        <label>
-          <input type="radio" name="itemType" value="furniture"> Furniture
-        </label>
-        <label>
-          <input type="radio" name="itemType" value="mixed"> Mixed
-        </label>
-        <label>
-          How many item/s are being collected?
-          <input type="number" id="numItems" min="0" value="0">
-        </label>
-      </fieldset>
-    </div>
-
-    <!-- Q4: Surge Response -->
-    <fieldset>
-      <legend>Was this collection part of a surge response?</legend>
-      <label>
-        <input type="radio" name="surgeResponse" value="yes"> Yes
-      </label>
-      <label>
-        <input type="radio" name="surgeResponse" value="no"> No
-      </label>
-    </fieldset>
-
-    <!-- Q5: Insurance -->
-    <fieldset>
-      <legend>Are we providing insurance cover for the items collected?</legend>
-      <label>
-        <input type="radio" name="insurance" value="yes"> Yes
-      </label>
-      <label>
-        <input type="radio" name="insurance" value="no"> No
-      </label>
-    </fieldset>
-
-    <!-- Insurance Details (shown when insurance = yes) -->
-    <div id="insuranceDetails" class="hidden">
+    <!-- Insurance Section -->
+    <div id="insuranceSection" class="hidden">
       <fieldset>
         <legend>Insurance Details</legend>
         <label>
-          What is the total value to be covered?
-          <input type="number" id="insuranceTotalValue" min="0" value="0">
+          Was this collection part of a surge response?
+          <br>
+          <input type="radio" name="insuranceSurge" value="yes"> Yes
+          <input type="radio" name="insuranceSurge" value="no" checked> No
         </label>
+      </fieldset>
+      <fieldset>
+        <legend>Collection Route</legend>
+        <label>
+          Is collection/delivery on a normal route?
+          <br>
+          <!-- Neither option is preselected now -->
+          <input type="radio" name="insuranceNormalRoute" value="yes"> Yes
+          <input type="radio" name="insuranceNormalRoute" value="no"> No
+        </label>
+      </fieldset>
+      <!-- If Normal Route is No, show dedicated collection details -->
+      <div id="insuranceDedicated" class="hidden">
         <fieldset>
-          <legend>Does this fall within our usual cover?</legend>
+          <legend>Dedicated Collection Details</legend>
           <label>
-            <input type="radio" name="usualCover" value="yes"> Yes
+            How many vans are being sent as part of a dedicated collection for this job?
+            <input type="number" id="insuranceNumVans" min="0" value="0">
           </label>
           <label>
-            <input type="radio" name="usualCover" value="no"> No
+            How many additional people are being sent for this job?
+            <input type="number" id="insuranceNumPeople" min="0" value="0">
           </label>
         </fieldset>
+      </div>
+      <!-- If Normal Route is Yes, show standard collection details -->
+      <fieldset id="insuranceStandardDetails" class="hidden">
+        <legend>Collection Details</legend>
+        <label>
+          Is a second person required for collection?
+          <br>
+          <input type="radio" name="insuranceSecondPerson" value="no" checked> No
+          <input type="radio" name="insuranceSecondPerson" value="advisable"> Advisable
+          <input type="radio" name="insuranceSecondPerson" value="essential"> Essential
+        </label>
+      </fieldset>
+      <fieldset id="insuranceItemDetails" class="hidden">
+        <legend>Item Details</legend>
+        <label>
+          What type of item/s are being collected?
+          <br>
+          <input type="radio" name="insuranceItemType" value="artwork"> Artwork
+          <input type="radio" name="insuranceItemType" value="objects"> Objects
+          <input type="radio" name="insuranceItemType" value="furniture"> Furniture
+          <input type="radio" name="insuranceItemType" value="mixed"> Mixed
+        </label>
+        <label>
+          How many item/s are being collected?
+          <input type="number" id="insuranceNumItems" min="0" value="0">
+        </label>
       </fieldset>
     </div>
-    
-    <!-- New Section: Trip Type -->
-    <fieldset>
-      <legend>Trip Type</legend>
-      <label>
-        <input type="radio" name="tripType" value="oneway" checked> One-Way
-      </label>
-      <label>
-        <input type="radio" name="tripType" value="roundtrip"> Round Trip
-      </label>
-    </fieldset>
 
     <button type="button" onclick="calculateTotal()">Calculate Total</button>
   </form>
 
-  <h2>Total Price: £<span id="totalPrice">0.00</span></h2>
+  <h2 id="resultMessage">Total Price: £<span id="totalPrice">0.00</span></h2>
 
   <script>
-    // Toggle dedicatedCollection and standardFields based on normalRoute answer.
-    document.getElementsByName('normalRoute').forEach(radio => {
+    // Ensure only one client type checkbox is selected at a time.
+    const privateCheckbox = document.getElementById('clientPrivate');
+    const insuranceCheckbox = document.getElementById('clientInsurance');
+
+    privateCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        insuranceCheckbox.checked = false;
+        document.getElementById('privateSection').classList.remove('hidden');
+        document.getElementById('insuranceSection').classList.add('hidden');
+      } else {
+        document.getElementById('privateSection').classList.add('hidden');
+      }
+    });
+
+    insuranceCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        privateCheckbox.checked = false;
+        document.getElementById('insuranceSection').classList.remove('hidden');
+        document.getElementById('privateSection').classList.add('hidden');
+      } else {
+        document.getElementById('insuranceSection').classList.add('hidden');
+      }
+    });
+
+    // For Private Client: show crate options if crate is required.
+    document.getElementsByName('privateCrateRequired').forEach(radio => {
       radio.addEventListener('change', function() {
-        const dedicatedSection = document.getElementById('dedicatedCollection');
-        const standardFields = document.getElementById('standardFields');
+        const crateOptions = document.getElementById('privateCrateOptions');
+        if (this.value === "yes") {
+          crateOptions.classList.remove('hidden');
+        } else {
+          crateOptions.classList.add('hidden');
+        }
+      });
+    });
+
+    // For Insurance branch: show/hide dedicated or standard details based on the normal route answer.
+    document.getElementsByName('insuranceNormalRoute').forEach(radio => {
+      radio.addEventListener('change', function() {
         if (this.value === 'no') {
-          dedicatedSection.classList.remove('hidden');
-          standardFields.classList.add('hidden');
+          document.getElementById('insuranceDedicated').classList.remove('hidden');
+          document.getElementById('insuranceStandardDetails').classList.add('hidden');
+          document.getElementById('insuranceItemDetails').classList.add('hidden');
         } else {
-          dedicatedSection.classList.add('hidden');
-          standardFields.classList.remove('hidden');
+          document.getElementById('insuranceDedicated').classList.add('hidden');
+          document.getElementById('insuranceStandardDetails').classList.remove('hidden');
+          document.getElementById('insuranceItemDetails').classList.remove('hidden');
         }
       });
     });
 
-    // Toggle insurance details if insurance cover is provided.
-    document.getElementsByName('insurance').forEach(radio => {
-      radio.addEventListener('change', function() {
-        const insuranceDetails = document.getElementById('insuranceDetails');
-        if (this.value === 'yes') {
-          insuranceDetails.classList.remove('hidden');
-        } else {
-          insuranceDetails.classList.add('hidden');
-        }
-      });
-    });
-
-    // Main calculation function
     function calculateTotal() {
       let total = 0;
-      const normalRoute = document.querySelector('input[name="normalRoute"]:checked');
+      let priceOnAsking = false;
+      const resultMessage = document.getElementById('resultMessage');
+      resultMessage.style.color = "black"; // Reset styling
 
-      if (normalRoute) {
-        if (normalRoute.value === 'yes') {
-          // Standard route calculations
-          total += 90;
-
-          // Q2: Second Person Required
-          const secondPerson = document.querySelector('input[name="secondPerson"]:checked');
-          if (secondPerson) {
-            if (secondPerson.value === 'advisable') {
-              total += 250;
-            } else if (secondPerson.value === 'essential') {
-              total += 500;
-            }
+      // PRIVATE CLIENT CALCULATIONS
+      if (privateCheckbox.checked) {
+        // Retrieve values
+        const totalValue = document.getElementById('privateTotalValue').value;
+        const numItems = parseInt(document.getElementById('privateItemCount').value, 10);
+        const itemTypeElem = document.querySelector('input[name="privateItemType"]:checked');
+        if (!totalValue || !numItems || !itemTypeElem) {
+          alert("Please complete all Private Client fields.");
+          return;
+        }
+        // Determine base price based on total value range and number of items
+        if (numItems <= 3) {
+          switch(totalValue) {
+            case "0-10000":
+              total += 90;
+              break;
+            case "10001-20000":
+              total += 120;
+              break;
+            case "20001-30000":
+              total += 160;
+              break;
+            case "30001-40000":
+              total += 210;
+              break;
+            case "40001-50000":
+              total += 270;
+              break;
+            case "50000plus":
+              priceOnAsking = true;
+              break;
           }
-
-          // Q3: Items collected calculation
-          const itemTypeElem = document.querySelector('input[name="itemType"]:checked');
-          const numItems = parseFloat(document.getElementById('numItems').value) || 0;
-          if (itemTypeElem && numItems > 0) {
-            const additionalItems = Math.max(numItems - 1, 0);
-            if (secondPerson && secondPerson.value === 'no') {
-              // No second person: artwork & objects cost £10 each extra,
-              // furniture & mixed cost £20 each extra.
-              if (itemTypeElem.value === 'artwork' || itemTypeElem.value === 'objects') {
-                total += additionalItems * 10;
-              } else if (itemTypeElem.value === 'furniture' || itemTypeElem.value === 'mixed') {
-                total += additionalItems * 20;
+        } else { // more than 3 items
+          if (totalValue === "0-10000") {
+            total += 90;
+          } else {
+            priceOnAsking = true;
+          }
+        }
+        if (priceOnAsking) {
+          resultMessage.innerHTML = "Price on Asking";
+          document.getElementById('calculatorForm').style.display = "none";
+          return;
+        }
+        // Second person requirement cost
+        const secondPerson = document.querySelector('input[name="privateSecondPerson"]:checked');
+        if (secondPerson) {
+          if (secondPerson.value === "advisable") {
+            total += 250;
+          } else if (secondPerson.value === "essential") {
+            total += 500;
+          }
+        }
+        // Additional cost for extra items (beyond the first)
+        const additional = numItems - 1;
+        if (additional > 0 && secondPerson) {
+          let multiplier = 0;
+          if (secondPerson.value === "no") {
+            if (itemTypeElem.value === "artwork" || itemTypeElem.value === "object") {
+              multiplier = 10;
+            } else if (itemTypeElem.value === "furniture" || itemTypeElem.value === "mixed") {
+              multiplier = 20;
+            }
+          } else if (secondPerson.value === "advisable" || secondPerson.value === "essential") {
+            multiplier = 25;
+          }
+          total += additional * multiplier;
+        }
+        // Crate requirement
+        const crateRequired = document.querySelector('input[name="privateCrateRequired"]:checked');
+        if (crateRequired && crateRequired.value === "yes") {
+          const crateType = document.querySelector('input[name="privateCrateType"]:checked');
+          if (crateType) {
+            if (crateType.value === "inhouse") {
+              // In-house cost depends on total value range
+              if (totalValue === "0-10000" || totalValue === "10001-20000" || totalValue === "20001-30000") {
+                total += 180;
+              } else if (totalValue === "30001-40000" || totalValue === "40001-50000") {
+                total += 240;
               }
-            } else if (secondPerson && (secondPerson.value === 'advisable' || secondPerson.value === 'essential')) {
-              // With a second person: all additional items cost £25 each.
-              total += additionalItems * 25;
+            } else if (crateType.value === "bespoke") {
+              resultMessage.innerHTML = "Price on Asking";
+              document.getElementById('calculatorForm').style.display = "none";
+              return;
             }
           }
-        } else if (normalRoute.value === 'no') {
-          // Dedicated collection calculations
-          const numVans = parseFloat(document.getElementById('numVans').value) || 0;
-          const numPeople = parseFloat(document.getElementById('numPeople').value) || 0;
-          total += (numVans * 1000) + (numPeople * 500);
+        }
+        // Trip Type adjustment
+        const tripType = document.querySelector('input[name="privateTripType"]:checked');
+        if (tripType && tripType.value === "roundtrip") {
+          total *= 2;
         }
       }
-
-      // Q4: Surge response
-      const surgeResponse = document.querySelector('input[name="surgeResponse"]:checked');
-      if (surgeResponse && surgeResponse.value === 'yes') {
-        total += 400;
-      }
-
-      // Q5: Insurance calculation (only if cover provided)
-      const insurance = document.querySelector('input[name="insurance"]:checked');
-      if (insurance && insurance.value === 'yes') {
-        const insuranceValue = parseFloat(document.getElementById('insuranceTotalValue').value) || 0;
-        const usualCover = document.querySelector('input[name="usualCover"]:checked');
-        if (usualCover && usualCover.value === 'no') {
-          total += insuranceValue * 0.0015;
+      // INSURANCE CALCULATIONS (unchanged)
+      else if (insuranceCheckbox.checked) {
+        const insuranceSurge = document.querySelector('input[name="insuranceSurge"]:checked');
+        if (insuranceSurge && insuranceSurge.value === "yes") {
+          total += 400;
+        }
+        const insuranceNormalRoute = document.querySelector('input[name="insuranceNormalRoute"]:checked');
+        if (insuranceNormalRoute) {
+          if (insuranceNormalRoute.value === "no") {
+            // Use dedicated collection details
+            const numVans = parseFloat(document.getElementById('insuranceNumVans').value) || 0;
+            const numPeople = parseFloat(document.getElementById('insuranceNumPeople').value) || 0;
+            total += (numVans * 1000) + (numPeople * 500);
+          } else {
+            // Normal route: use standard collection details
+            const insuranceSecondPerson = document.querySelector('input[name="insuranceSecondPerson"]:checked');
+            if (insuranceSecondPerson) {
+              if (insuranceSecondPerson.value === "advisable") {
+                total += 250;
+              } else if (insuranceSecondPerson.value === "essential") {
+                total += 500;
+              }
+            }
+            const insuranceItemType = document.querySelector('input[name="insuranceItemType"]:checked');
+            const insuranceNumItems = parseFloat(document.getElementById('insuranceNumItems').value) || 0;
+            if (insuranceItemType && insuranceNumItems > 0) {
+              const additionalItems = Math.max(insuranceNumItems - 1, 0);
+              if (insuranceSecondPerson) {
+                if (insuranceSecondPerson.value === "no") {
+                  if (insuranceItemType.value === "artwork" || insuranceItemType.value === "objects") {
+                    total += additionalItems * 10;
+                  } else if (insuranceItemType.value === "furniture" || insuranceItemType.value === "mixed") {
+                    total += additionalItems * 20;
+                  }
+                } else if (insuranceSecondPerson.value === "advisable" || insuranceSecondPerson.value === "essential") {
+                  total += additionalItems * 25;
+                }
+              }
+            }
+          }
         }
       }
-      
-      // New: Trip Type adjustment
-      const tripType = document.querySelector('input[name="tripType"]:checked');
-      if (tripType && tripType.value === 'roundtrip') {
-        total *= 2;
-      }
-
-      // Display the total in GBP
+      // Display the total price in GBP.
       document.getElementById('totalPrice').textContent = total.toFixed(2);
     }
   </script>
