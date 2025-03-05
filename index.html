@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Collection and Delivery Calculator</title>
-  <!-- If you have Adobe Fonts embed codes for Begum and Gill Sans, add them here -->
+  <!-- If you have Adobe Fonts embed codes for Begum and Gill Sans, include them here -->
+  <link href="https://fonts.googleapis.com/css?family=Gill+Sans+Nova:300,400,600|Begum+Semi+Bold" rel="stylesheet">
   <style>
     /* Base Styles inspired by FARCO Brand Guidelines */
     body {
@@ -23,7 +24,7 @@
       display: inline-block;
       margin: 0;
       font-family: 'Begum Semi Bold', 'Gill Sans Nova', 'Gill Sans', sans-serif;
-      font-size: 36px;
+      font-size: 36px; /* Adjust as needed */
       vertical-align: middle;
       color: #34434c;
     }
@@ -31,7 +32,7 @@
       display: inline-block;
       vertical-align: middle;
       margin-left: 20px;
-      height: 36px;
+      height: 36px; /* same as the h1 height for scale */
     }
     #logo img {
       height: 100%;
@@ -90,27 +91,46 @@
     button:hover {
       background-color: #e58317;
     }
-    /* Modal styles */
-    #priceModal {
+    /* Center the result message */
+    #resultMessage {
+      text-align: center;
+      margin-top: 20px;
+    }
+    /* FAQ Button */
+    #faqButton {
+      background-color: #34434c;
+      font-size: 14px;
+      padding: 8px 16px;
+      width: auto;
+      margin: 20px auto;
+      display: block;
+    }
+    /* Modal styles for both POA and FAQ modals */
+    #priceModal, #faqModal {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
       background: rgba(0, 0, 0, 0.5);
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
-    #priceModal .modal-content {
+    #priceModal .modal-content, #faqModal .modal-content {
       background: #fff;
       padding: 20px;
       border-radius: 4px;
-      text-align: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       max-width: 90%;
       font-family: 'Gill Sans Nova', 'Gill Sans', sans-serif;
     }
-    #priceModal button {
+    /* POA modal: center text */
+    #priceModal .modal-content {
+      text-align: center;
+    }
+    #priceModal button, #faqModal button {
       background-color: #f7941d;
       color: #fff;
       border: none;
@@ -118,13 +138,29 @@
       margin-top: 10px;
       cursor: pointer;
     }
+    /* FAQ modal: left-aligned text, scrollable content */
+    #faqModal .modal-content {
+      text-align: left;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    /* Table in FAQ */
+    #faqModal table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    #faqModal th, #faqModal td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    #faqModal th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
     .hidden {
       display: none;
-    }
-    /* Center the result message */
-    #resultMessage {
-      text-align: center;
-      margin-top: 20px;
     }
   </style>
 </head>
@@ -297,6 +333,11 @@
 
   <h2 id="resultMessage">Total Price: £<span id="totalPrice">0.00</span></h2>
 
+  <!-- FAQ Button -->
+  <div style="text-align: center; margin-top: 20px;">
+    <button type="button" id="faqButton" onclick="showFaqModal()">FAQ</button>
+  </div>
+
   <!-- Modal for POA messages -->
   <div id="priceModal">
     <div class="modal-content">
@@ -305,15 +346,107 @@
     </div>
   </div>
 
+  <!-- Modal for FAQ -->
+  <div id="faqModal" class="hidden">
+    <div class="modal-content">
+      <h2>FAQ</h2>
+      <p>
+        The calculator runs based on our centralised pricing systems for collection and delivery using the following guidelines:
+      </p>
+      <h3>Private Clients</h3>
+      <p>
+        Before collecting an item, we must always confirm with the client:
+      </p>
+      <ul>
+        <li>The declared value of the artwork/decorative object.</li>
+        <li>The level of extended cover they require while the item is in our care, if any.</li>
+        <li>Whether the item is to be covered under their own insurance while entrusted to us (including during transit and while in the studio).</li>
+        <li>How many items are to be collected.</li>
+      </ul>
+      <p>
+        <table>
+          <tr>
+            <th>Specified Value Collection (max 3 items)</th>
+            <th>Delivery Cost (Each Way)</th>
+          </tr>
+          <tr>
+            <td>£0 - £10,000</td>
+            <td>£90</td>
+          </tr>
+          <tr>
+            <td>£10,001 - £20,000</td>
+            <td>£120</td>
+          </tr>
+          <tr>
+            <td>£20,001 - £30,000</td>
+            <td>£160</td>
+          </tr>
+          <tr>
+            <td>£30,001 - £40,000</td>
+            <td>£210</td>
+          </tr>
+          <tr>
+            <td>£40,001 - £50,000</td>
+            <td>£280</td>
+          </tr>
+          <tr>
+            <td>£50,000+</td>
+            <td>POA (Chris, Anna, Julia to advise)</td>
+          </tr>
+        </table>
+      </p>
+      <p>
+        For low value items (under £10,000) a surcharge of £25 per item will be added for collections greater than 3. For larger collections of more valuable pieces please consult Chris, Anna or Julia.
+      </p>
+      <p>
+        The above covers items that will be with us for up to 12 weeks. If an item is here for storage or is anticipated to be with us longer than the specified 12 weeks, please consult Chris, Anna or Julia.
+      </p>
+      <p>
+        For the question “is a second person needed for collection”, a judgment call must be made regarding how essential a second person is. If it is just for ease, select “advisable”; if it is completely necessary, choose “essential.”
+      </p>
+      <h3>Insurance Clients</h3>
+      <p>
+        Before collecting items for our insurance clients, we must confirm:
+      </p>
+      <ul>
+        <li>The total declared value of the pieces to be collected.</li>
+        <li>The level of extended cover required while the items are in our care, if any.</li>
+        <li>Whether the items are to be covered under their own insurance while entrusted to us (including during transit and while in the studio).</li>
+        <li>How many items are to be collected.</li>
+      </ul>
+      <p>
+        For collections where the total value is less than £50,000 and insurance is being extended, use the form to calculate collection costs. For collections where the total value is greater than £50,000 or insurance is not being extended, consult Chris, Anna or Julia.
+      </p>
+      <p>
+        Please note whether the collection falls as part of a surge response – if unclear, seek clarity from Julia.
+      </p>
+      <p>
+        For the question “is a second person needed for collection”, a judgment call must be made regarding how essential a second person is. If it is just for ease, select “advisable”; if it is completely necessary, choose “essential”.
+      </p>
+      <p>
+        Where a dedicated collection is being arranged, work on the basis of 1 van = 1 driver. So any additional people fall outside of this (eg. if we send one van with two people, there would be one additional person / if we send three vans with three people there would be no additional people).
+       </p>
+      <button onclick="closeFaqModal()">Close FAQ</button>
+    </div>
+  </div>
+
   <script>
-    // Function to show the modal with a custom message
+    // Function to show the POA modal with a custom message
     function showPriceModal(message) {
       document.getElementById('modalText').innerHTML = message;
       document.getElementById('priceModal').style.display = "flex";
     }
-    // Function to close the modal
+    // Function to close the POA modal
     function closePriceModal() {
       document.getElementById('priceModal').style.display = "none";
+    }
+    // Function to show the FAQ modal
+    function showFaqModal() {
+      document.getElementById('faqModal').style.display = "flex";
+    }
+    // Function to close the FAQ modal
+    function closeFaqModal() {
+      document.getElementById('faqModal').style.display = "none";
     }
 
     // Toggle client type sections
