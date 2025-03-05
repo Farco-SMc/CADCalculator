@@ -3,15 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <title>Collection and Delivery Calculator</title>
+  <!-- If you have Adobe Fonts embed codes for Begum and Gill Sans, add them here -->
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    fieldset { margin-bottom: 15px; padding: 10px; }
-    .hidden { display: none; }
-    label { display: block; margin-top: 8px; }
+    /* Base Styles inspired by FARCO Brand Guidelines */
+    body {
+      background-color: #f8f8f8;
+      font-family: 'Gill Sans Nova', 'Gill Sans', 'Helvetica Neue', sans-serif;
+      color: #34434c; /* dark grey */
+      margin: 20px;
+      padding: 0;
+    }
+    /* Header container to center title & logo */
+    #headerContainer {
+      text-align: center;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    #headerContainer h1 {
+      display: inline-block;
+      margin: 0;
+      font-family: 'Begum Semi Bold', 'Gill Sans Nova', 'Gill Sans', sans-serif;
+      font-size: 36px;
+      vertical-align: middle;
+      color: #34434c;
+    }
+    #logo {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 20px;
+      height: 36px;
+    }
+    #logo img {
+      height: 100%;
+      width: auto;
+    }
+    form {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    fieldset {
+      border: none;
+      margin-bottom: 15px;
+      padding: 0;
+    }
+    fieldset legend {
+      font-family: 'Begum Semi Bold', 'Gill Sans Nova', 'Gill Sans', sans-serif;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #34434c;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    button {
+      background-color: #f7941d; /* FARCO Orange */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 2px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #e58317;
+    }
+    /* Modal styles */
+    #priceModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #priceModal .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      max-width: 90%;
+      font-family: 'Gill Sans Nova', 'Gill Sans', sans-serif;
+    }
+    #priceModal button {
+      background-color: #f7941d;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Center the result message */
+    #resultMessage {
+      text-align: center;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-  <h1>Collection and Delivery Calculator</h1>
+  <div id="headerContainer">
+    <h1>Collection and Delivery Calculator</h1>
+    <div id="logo">
+      <img src="logo.jpg" alt="Company Logo">
+    </div>
+  </div>
   <form id="calculatorForm">
     <!-- Client Type Section -->
     <fieldset>
@@ -81,7 +204,6 @@
           <input type="radio" name="privateCrateType" value="bespoke"> Bespoke
         </label>
       </fieldset>
-      <!-- New Trip Type Section -->
       <fieldset>
         <legend>Trip Type</legend>
         <label>
@@ -95,6 +217,20 @@
 
     <!-- Insurance Section -->
     <div id="insuranceSection" class="hidden">
+      <!-- New Insurance Coverage Fields -->
+      <fieldset id="insuranceCoverageStart">
+        <legend>Insurance Coverage</legend>
+        <label>
+          What is the total value to be collected?
+          <input type="number" id="insuranceTotalValueInput" min="0" value="0">
+        </label>
+        <label>
+          Is insurance being extended whilst in our care?
+          <br>
+          <input type="radio" name="insuranceExtended" value="yes"> Yes
+          <input type="radio" name="insuranceExtended" value="no"> No
+        </label>
+      </fieldset>
       <fieldset>
         <legend>Insurance Details</legend>
         <label>
@@ -109,7 +245,7 @@
         <label>
           Is collection/delivery on a normal route?
           <br>
-          <!-- Neither option is preselected now -->
+          <!-- Neither option preselected -->
           <input type="radio" name="insuranceNormalRoute" value="yes"> Yes
           <input type="radio" name="insuranceNormalRoute" value="no"> No
         </label>
@@ -151,7 +287,7 @@
         </label>
         <label>
           How many item/s are being collected?
-          <input type="number" id="insuranceNumItems" min="0" value="0">
+          <input type="number" id="insuranceNumItems" min="1" value="1">
         </label>
       </fieldset>
     </div>
@@ -161,8 +297,26 @@
 
   <h2 id="resultMessage">Total Price: £<span id="totalPrice">0.00</span></h2>
 
+  <!-- Modal for Price on Asking -->
+  <div id="priceModal">
+    <div class="modal-content">
+      <p id="modalText">Price on asking - please speak to Chris, Anna or Julia for a cost</p>
+      <button onclick="closePriceModal()">Close</button>
+    </div>
+  </div>
+
   <script>
-    // Ensure only one client type checkbox is selected at a time.
+    // Function to show the modal with a custom message
+    function showPriceModal(message) {
+      document.getElementById('modalText').innerHTML = message;
+      document.getElementById('priceModal').style.display = "flex";
+    }
+    // Function to close the modal
+    function closePriceModal() {
+      document.getElementById('priceModal').style.display = "none";
+    }
+
+    // Toggle client type sections
     const privateCheckbox = document.getElementById('clientPrivate');
     const insuranceCheckbox = document.getElementById('clientInsurance');
 
@@ -186,7 +340,7 @@
       }
     });
 
-    // For Private Client: show crate options if crate is required.
+    // Show crate options if "Yes" is selected for crate requirement.
     document.getElementsByName('privateCrateRequired').forEach(radio => {
       radio.addEventListener('change', function() {
         const crateOptions = document.getElementById('privateCrateOptions');
@@ -198,7 +352,7 @@
       });
     });
 
-    // For Insurance branch: show/hide dedicated or standard details based on the normal route answer.
+    // For Insurance branch: show/hide details based on the normal route answer.
     document.getElementsByName('insuranceNormalRoute').forEach(radio => {
       radio.addEventListener('change', function() {
         if (this.value === 'no') {
@@ -213,6 +367,15 @@
       });
     });
 
+    // Immediately show modal when insuranceExtended is set to "no"
+    document.getElementsByName('insuranceExtended').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.value === "no") {
+          showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost to determine our insurance coverage");
+        }
+      });
+    });
+
     function calculateTotal() {
       let total = 0;
       let priceOnAsking = false;
@@ -221,15 +384,14 @@
 
       // PRIVATE CLIENT CALCULATIONS
       if (privateCheckbox.checked) {
-        // Retrieve values
         const totalValue = document.getElementById('privateTotalValue').value;
         const numItems = parseInt(document.getElementById('privateItemCount').value, 10);
         const itemTypeElem = document.querySelector('input[name="privateItemType"]:checked');
-        if (!totalValue || !numItems || !itemTypeElem) {
+        if (!totalValue || isNaN(numItems) || numItems < 1 || !itemTypeElem) {
           alert("Please complete all Private Client fields.");
           return;
         }
-        // Determine base price based on total value range and number of items
+        // Base Price Calculation:
         if (numItems <= 3) {
           switch(totalValue) {
             case "0-10000":
@@ -251,69 +413,69 @@
               priceOnAsking = true;
               break;
           }
-        } else { // more than 3 items
+        } else { // More than 3 items
           if (totalValue === "0-10000") {
-            total += 90;
+            total += 90 + 25 * (numItems - 3);
           } else {
             priceOnAsking = true;
           }
         }
         if (priceOnAsking) {
-          resultMessage.innerHTML = "Price on Asking";
-          document.getElementById('calculatorForm').style.display = "none";
+          if (totalValue === "50000plus" && numItems <= 3) {
+            showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost owing to item value");
+          } else if (numItems > 3 && totalValue !== "0-10000") {
+            showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost owing to number of high value items");
+          }
           return;
         }
-        // Second person requirement cost
-        const secondPerson = document.querySelector('input[name="privateSecondPerson"]:checked');
-        if (secondPerson) {
-          if (secondPerson.value === "advisable") {
-            total += 250;
-          } else if (secondPerson.value === "essential") {
-            total += 500;
-          }
+        // Second Person Requirement Cost
+        const secondPersonElem = document.querySelector('input[name="privateSecondPerson"]:checked');
+        const secondPerson = secondPersonElem ? secondPersonElem.value : "no";
+        if (secondPerson === "advisable") {
+          total += 250;
+        } else if (secondPerson === "essential") {
+          total += 500;
         }
-        // Additional cost for extra items (beyond the first)
-        const additional = numItems - 1;
-        if (additional > 0 && secondPerson) {
-          let multiplier = 0;
-          if (secondPerson.value === "no") {
-            if (itemTypeElem.value === "artwork" || itemTypeElem.value === "object") {
-              multiplier = 10;
-            } else if (itemTypeElem.value === "furniture" || itemTypeElem.value === "mixed") {
-              multiplier = 20;
-            }
-          } else if (secondPerson.value === "advisable" || secondPerson.value === "essential") {
-            multiplier = 25;
-          }
-          total += additional * multiplier;
-        }
-        // Crate requirement
-        const crateRequired = document.querySelector('input[name="privateCrateRequired"]:checked');
-        if (crateRequired && crateRequired.value === "yes") {
-          const crateType = document.querySelector('input[name="privateCrateType"]:checked');
-          if (crateType) {
-            if (crateType.value === "inhouse") {
-              // In-house cost depends on total value range
+        // Crate Requirement
+        const crateRequiredElem = document.querySelector('input[name="privateCrateRequired"]:checked');
+        if (crateRequiredElem && crateRequiredElem.value === "yes") {
+          const crateTypeElem = document.querySelector('input[name="privateCrateType"]:checked');
+          if (crateTypeElem) {
+            if (crateTypeElem.value === "inhouse") {
               if (totalValue === "0-10000" || totalValue === "10001-20000" || totalValue === "20001-30000") {
                 total += 180;
               } else if (totalValue === "30001-40000" || totalValue === "40001-50000") {
                 total += 240;
               }
-            } else if (crateType.value === "bespoke") {
-              resultMessage.innerHTML = "Price on Asking";
-              document.getElementById('calculatorForm').style.display = "none";
-              return;
+            } else if (crateTypeElem.value === "bespoke") {
+              priceOnAsking = true;
             }
           }
+          if (priceOnAsking) {
+            showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost for a bespoke crate");
+            return;
+          }
         }
-        // Trip Type adjustment
-        const tripType = document.querySelector('input[name="privateTripType"]:checked');
-        if (tripType && tripType.value === "roundtrip") {
+        // Trip Type Adjustment
+        const tripTypeElem = document.querySelector('input[name="privateTripType"]:checked');
+        if (tripTypeElem && tripTypeElem.value === "roundtrip") {
           total *= 2;
         }
       }
-      // INSURANCE CALCULATIONS (unchanged)
+      // INSURANCE CALCULATIONS
       else if (insuranceCheckbox.checked) {
+        // New Insurance Coverage Fields:
+        const insuranceTotalValueInput = document.getElementById('insuranceTotalValueInput').value;
+        const insuranceExtended = document.querySelector('input[name="insuranceExtended"]:checked');
+        if (insuranceTotalValueInput === "" || !insuranceExtended) {
+          alert("Please complete the insurance coverage fields.");
+          return;
+        }
+        if (insuranceExtended.value === "no") {
+          // Modal already shown by change listener, so simply return.
+          return;
+        }
+        // Continue with remaining Insurance calculations.
         const insuranceSurge = document.querySelector('input[name="insuranceSurge"]:checked');
         if (insuranceSurge && insuranceSurge.value === "yes") {
           total += 400;
@@ -321,12 +483,12 @@
         const insuranceNormalRoute = document.querySelector('input[name="insuranceNormalRoute"]:checked');
         if (insuranceNormalRoute) {
           if (insuranceNormalRoute.value === "no") {
-            // Use dedicated collection details
             const numVans = parseFloat(document.getElementById('insuranceNumVans').value) || 0;
             const numPeople = parseFloat(document.getElementById('insuranceNumPeople').value) || 0;
             total += (numVans * 1000) + (numPeople * 500);
           } else {
-            // Normal route: use standard collection details
+            // For normal route = yes, add 90 first.
+            total += 90;
             const insuranceSecondPerson = document.querySelector('input[name="insuranceSecondPerson"]:checked');
             if (insuranceSecondPerson) {
               if (insuranceSecondPerson.value === "advisable") {
@@ -339,22 +501,20 @@
             const insuranceNumItems = parseFloat(document.getElementById('insuranceNumItems').value) || 0;
             if (insuranceItemType && insuranceNumItems > 0) {
               const additionalItems = Math.max(insuranceNumItems - 1, 0);
-              if (insuranceSecondPerson) {
-                if (insuranceSecondPerson.value === "no") {
-                  if (insuranceItemType.value === "artwork" || insuranceItemType.value === "objects") {
-                    total += additionalItems * 10;
-                  } else if (insuranceItemType.value === "furniture" || insuranceItemType.value === "mixed") {
-                    total += additionalItems * 20;
-                  }
-                } else if (insuranceSecondPerson.value === "advisable" || insuranceSecondPerson.value === "essential") {
-                  total += additionalItems * 25;
+              const insuranceSecondPersonVal = insuranceSecondPerson ? insuranceSecondPerson.value : "no";
+              if (insuranceSecondPersonVal === "no") {
+                if (insuranceItemType.value === "artwork" || insuranceItemType.value === "objects") {
+                  total += additionalItems * 10;
+                } else if (insuranceItemType.value === "furniture" || insuranceItemType.value === "mixed") {
+                  total += additionalItems * 20;
                 }
+              } else {
+                total += additionalItems * 25;
               }
             }
           }
         }
       }
-      // Display the total price in GBP.
       document.getElementById('totalPrice').textContent = total.toFixed(2);
     }
   </script>
