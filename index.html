@@ -297,10 +297,10 @@
 
   <h2 id="resultMessage">Total Price: £<span id="totalPrice">0.00</span></h2>
 
-  <!-- Modal for Price on Asking -->
+  <!-- Modal for POA messages -->
   <div id="priceModal">
     <div class="modal-content">
-      <p id="modalText">Price on asking - please speak to Chris, Anna or Julia for a cost</p>
+      <p id="modalText">POA – please speak to Chris, Anna or Julia for a cost</p>
       <button onclick="closePriceModal()">Close</button>
     </div>
   </div>
@@ -371,7 +371,7 @@
     document.getElementsByName('insuranceExtended').forEach(radio => {
       radio.addEventListener('change', function() {
         if (this.value === "no") {
-          showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost to determine our insurance coverage");
+          showPriceModal("POA – please speak to Chris, Anna or Julia for a cost to determine our insurance coverage");
         }
       });
     });
@@ -422,9 +422,9 @@
         }
         if (priceOnAsking) {
           if (totalValue === "50000plus" && numItems <= 3) {
-            showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost owing to item value");
+            showPriceModal("POA – please speak to Chris, Anna or Julia for a cost owing to item value");
           } else if (numItems > 3 && totalValue !== "0-10000") {
-            showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost owing to number of high value items");
+            showPriceModal("POA – please speak to Chris, Anna or Julia for a cost owing to number of high value items");
           }
           return;
         }
@@ -452,7 +452,7 @@
             }
           }
           if (priceOnAsking) {
-            showPriceModal("Price on asking - please speak to Chris, Anna or Julia for a cost for a bespoke crate");
+            showPriceModal("POA – please speak to Chris, Anna or Julia for a cost for a bespoke crate");
             return;
           }
         }
@@ -471,8 +471,15 @@
           alert("Please complete the insurance coverage fields.");
           return;
         }
-        if (insuranceExtended.value === "no") {
-          // Modal already shown by change listener, so simply return.
+        const insuranceTotalValue = parseFloat(insuranceTotalValueInput);
+        if (insuranceExtended.value === "yes") {
+          if (insuranceTotalValue >= 50001) {
+            showPriceModal("POA – please speak to Chris, Anna or Julia for a cost owing to high collection value");
+            return;
+          }
+          // Otherwise, continue with Insurance calculations.
+        } else {
+          showPriceModal("POA – please speak to Chris, Anna or Julia for a cost to determine our insurance coverage");
           return;
         }
         // Continue with remaining Insurance calculations.
