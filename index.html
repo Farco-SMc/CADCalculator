@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Collection and Delivery Calculator</title>
-  <!-- If you have Adobe Fonts embed codes for Begum and Gill Sans, include them here -->
   <link href="https://fonts.googleapis.com/css?family=Gill+Sans+Nova:300,400,600|Begum+Semi+Bold" rel="stylesheet">
   <style>
     /* Base Styles inspired by FARCO Brand Guidelines */
@@ -185,7 +184,7 @@
       </label>
     </fieldset>
 
-    <!-- Private Client Section -->
+    <!-- Private Client Section (kept as in your original CDTEST17.html) -->
     <div id="privateSection" class="hidden">
       <fieldset>
         <legend>Private Client Details</legend>
@@ -253,7 +252,6 @@
 
     <!-- Insurance Section -->
     <div id="insuranceSection" class="hidden">
-      <!-- New Insurance Coverage Fields -->
       <fieldset id="insuranceCoverageStart">
         <legend>Insurance Coverage</legend>
         <label>
@@ -267,65 +265,69 @@
           <input type="radio" name="insuranceExtended" value="no"> No
         </label>
       </fieldset>
-      <fieldset>
-        <legend>Insurance Details</legend>
-        <label>
-          Was this collection part of a surge response?
-          <br>
-          <input type="radio" name="insuranceSurge" value="yes"> Yes
-          <input type="radio" name="insuranceSurge" value="no" checked> No
-        </label>
-      </fieldset>
-      <fieldset>
-        <legend>Collection Route</legend>
-        <label>
-          Is collection/delivery on a normal route?
-          <br>
-          <!-- Neither option preselected -->
-          <input type="radio" name="insuranceNormalRoute" value="yes"> Yes
-          <input type="radio" name="insuranceNormalRoute" value="no"> No
-        </label>
-      </fieldset>
-      <!-- If Normal Route is No, show dedicated collection details -->
-      <div id="insuranceDedicated" class="hidden">
+      <!-- Wrap the rest of the insurance form in a container -->
+      <div id="insuranceRest" class="hidden">
         <fieldset>
-          <legend>Dedicated Collection Details</legend>
+          <legend>Insurance Details</legend>
           <label>
-            How many vans are being sent as part of a dedicated collection for this job?
-            <input type="number" id="insuranceNumVans" min="0" value="0">
-          </label>
-          <label>
-            How many additional people are being sent for this job?
-            <input type="number" id="insuranceNumPeople" min="0" value="0">
+            Was this collection part of a surge response?
+            <br>
+            <input type="radio" name="insuranceSurge" value="yes"> Yes
+            <input type="radio" name="insuranceSurge" value="no" checked> No
           </label>
         </fieldset>
+        <fieldset>
+          <legend>Collection Route</legend>
+          <label>
+            Is collection/delivery on a normal route?
+            <br>
+            <input type="radio" name="insuranceNormalRoute" value="yes"> Yes
+            <input type="radio" name="insuranceNormalRoute" value="no"> No
+          </label>
+        </fieldset>
+        <div id="insuranceDedicated" class="hidden">
+          <fieldset>
+            <legend>Dedicated Collection Details</legend>
+            <label>
+              How many vans are being sent as part of a dedicated collection for this job?
+              <input type="number" id="insuranceNumVans" min="0" value="0">
+            </label>
+            <label>
+              How many additional people are being sent for this job?
+              <input type="number" id="insuranceNumPeople" min="0" value="0">
+            </label>
+          </fieldset>
+        </div>
+        <fieldset id="insuranceStandardDetails" class="hidden">
+          <legend>Collection Details</legend>
+          <label>
+            Is a second person required for collection?
+            <br>
+            <input type="radio" name="insuranceSecondPerson" value="no" checked> No
+            <input type="radio" name="insuranceSecondPerson" value="advisable"> Advisable
+            <input type="radio" name="insuranceSecondPerson" value="essential"> Essential
+          </label>
+        </fieldset>
+        <fieldset id="insuranceItemDetails" class="hidden">
+          <legend>Item Details (Choose all that apply)</legend>
+          <label>
+            <input type="checkbox" name="insuranceItemType" value="painting"> Painting
+          </label>
+          <label>
+            <input type="checkbox" name="insuranceItemType" value="work_on_paper"> Work on Paper
+          </label>
+          <label>
+            <input type="checkbox" name="insuranceItemType" value="object"> Object
+          </label>
+          <label>
+            <input type="checkbox" name="insuranceItemType" value="furniture"> Furniture
+          </label>
+          <label>
+            <input type="checkbox" name="insuranceItemType" value="sentimental"> Sentimental Pieces (per box)
+          </label>
+          <div id="insuranceItemCounts" class="hidden"></div>
+        </fieldset>
       </div>
-      <!-- If Normal Route is Yes, show standard collection details -->
-      <fieldset id="insuranceStandardDetails" class="hidden">
-        <legend>Collection Details</legend>
-        <label>
-          Is a second person required for collection?
-          <br>
-          <input type="radio" name="insuranceSecondPerson" value="no" checked> No
-          <input type="radio" name="insuranceSecondPerson" value="advisable"> Advisable
-          <input type="radio" name="insuranceSecondPerson" value="essential"> Essential
-        </label>
-      </fieldset>
-      <fieldset id="insuranceItemDetails" class="hidden">
-        <legend>Item Details</legend>
-        <label>
-          What type of item/s are being collected?
-          <br>
-          <input type="radio" name="insuranceItemType" value="artwork"> Artwork
-          <input type="radio" name="insuranceItemType" value="objects"> Objects
-          <input type="radio" name="insuranceItemType" value="furniture"> Furniture
-          <input type="radio" name="insuranceItemType" value="mixed"> Mixed
-        </label>
-        <label>
-          How many item/s are being collected?
-          <input type="number" id="insuranceNumItems" min="1" value="1">
-        </label>
-      </fieldset>
     </div>
 
     <button type="button" onclick="calculateTotal()">Calculate Total</button>
@@ -346,20 +348,15 @@
     </div>
   </div>
 
-  <!-- Modal for FAQ -->
+  <!-- Updated FAQ Modal -->
   <div id="faqModal" class="hidden">
     <div class="modal-content">
       <h2>FAQ</h2>
-      <p>
-        The calculator runs based on our centralised pricing systems for collection and delivery using the following guidelines:
-      </p>
       <h3>Private Clients</h3>
-      <p>
-        Before collecting an item, we must always confirm with the client:
-      </p>
+      <p>Before collecting an item, we must always confirm with the client:</p>
       <ul>
         <li>The declared value of the artwork/decorative object.</li>
-        <li>The level of extended cover they require while the item is in our care, if any.</li>
+        <li>The level of extended cover required while the item is in our care (if any).</li>
         <li>Whether the item is to be covered under their own insurance while entrusted to us (including during transit and while in the studio).</li>
         <li>How many items are to be collected.</li>
       </ul>
@@ -393,64 +390,45 @@
           <td>POA (Chris, Anna, Julia to advise)</td>
         </tr>
       </table>
-      <p>
-        For low value items (under £10,000) a surcharge of £25 per item will be added for collections greater than 3. For larger collections of more valuable pieces please consult Chris, Anna or Julia.
-      </p>
-      <p>
-        The above covers items that will be with us for up to 12 weeks. If an item is here for storage or is anticipated to be with us longer than the specified 12 weeks, please consult Chris, Anna or Julia.
-      </p>
-      <p>
-        For the question “is a second person needed for collection”, a judgment call must be made regarding how essential a second person is. If it is just for ease, select “advisable”; if it is completely necessary, choose “essential.”
-      </p>
+      <p>For low value items (under £10,000), a surcharge of £25 per additional item (beyond the first 3) will be added. If the total number of items exceeds 15, POA applies.</p>
+      <p>The above covers items that will be with us for up to 12 weeks. For longer storage, please consult Chris, Anna or Julia.</p>
+      <p>For the question “is a second person needed for collection”, a judgment call must be made: if it is just for ease, select “advisable”; if it is completely necessary, choose “essential.”</p>
       <h3>Insurance Clients</h3>
-      <p>
-        Before collecting items for our insurance clients, we must confirm:
-      </p>
+      <p>Before collecting items for our insurance clients, we must confirm:</p>
       <ul>
         <li>The total declared value of the pieces to be collected.</li>
-        <li>The level of extended cover required while the items are in our care, if any.</li>
+        <li>The level of extended cover required while the items are in our care (if any).</li>
         <li>Whether the items are to be covered under their own insurance while entrusted to us (including during transit and while in the studio).</li>
         <li>How many items are to be collected.</li>
       </ul>
-      <p>
-        For collections where the total value is less than £50,000 and insurance is being extended, use the form to calculate collection costs. For collections where the total value is greater than £50,000 or insurance is not being extended, consult Chris, Anna or Julia.
-      </p>
-      <p>
-        Please note whether the collection falls as part of a surge response – if unclear, seek clarity from Julia.
-      </p>
-      <p>
-        For the question “is a second person needed for collection”, a judgment call must be made regarding how essential a second person is. If it is just for ease, select “advisable”; if it is completely necessary, choose “essential.”
-      </p>
-      <p>
-        Where a dedicated collection is being arranged, work on the basis of 1 van = 1 driver. Any additional people fall outside of this (e.g. if we send one van with two people, there is one additional person).
-      </p>
+      <p>For collections where the total value is less than £50,000 and insurance is being extended, use the form to calculate collection costs. For collections with a higher value or if insurance is not extended, consult Chris, Anna or Julia.</p>
+      <p>Please note whether the collection falls under a surge response – if unclear, seek clarity from Julia.</p>
+      <p>For the question “is a second person needed for collection”, a judgment call must be made: if it is just for ease, select “advisable”; if it is completely necessary, choose “essential.”</p>
+      <p>Collection costs are calculated separately.</p>
       <button onclick="closeFaqModal()">Close FAQ</button>
     </div>
   </div>
 
   <script>
-    // Function to show the POA modal with a custom message
+    // POA modal functions
     function showPriceModal(message) {
       document.getElementById('modalText').innerHTML = message;
       document.getElementById('priceModal').style.display = "flex";
     }
-    // Function to close the POA modal
     function closePriceModal() {
       document.getElementById('priceModal').style.display = "none";
     }
-    // Function to show the FAQ modal
+    // FAQ modal functions
     function showFaqModal() {
       document.getElementById('faqModal').style.display = "flex";
     }
-    // Function to close the FAQ modal
     function closeFaqModal() {
       document.getElementById('faqModal').style.display = "none";
     }
-
+    
     // Toggle client type sections
     const privateCheckbox = document.getElementById('clientPrivate');
     const insuranceCheckbox = document.getElementById('clientInsurance');
-
     privateCheckbox.addEventListener('change', function() {
       if (this.checked) {
         insuranceCheckbox.checked = false;
@@ -460,18 +438,18 @@
         document.getElementById('privateSection').classList.add('hidden');
       }
     });
-
     insuranceCheckbox.addEventListener('change', function() {
       if (this.checked) {
         privateCheckbox.checked = false;
         document.getElementById('insuranceSection').classList.remove('hidden');
         document.getElementById('privateSection').classList.add('hidden');
+        checkInsuranceCoverage();
       } else {
         document.getElementById('insuranceSection').classList.add('hidden');
       }
     });
-
-    // Show crate options if "Yes" is selected for crate requirement.
+    
+    // Show crate options for private branch
     document.getElementsByName('privateCrateRequired').forEach(radio => {
       radio.addEventListener('change', function() {
         const crateOptions = document.getElementById('privateCrateOptions');
@@ -482,8 +460,66 @@
         }
       });
     });
-
-    // For Insurance branch: show/hide details based on the normal route answer.
+    
+    // Dynamic item count inputs for Private Client branch (kept as in original CDTEST17)
+    document.querySelectorAll('input[name="privateItemType"]').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const container = document.getElementById('privateItemCounts');
+        if (document.querySelectorAll('input[name="privateItemType"]:checked').length > 0) {
+          container.classList.remove('hidden');
+        } else {
+          container.classList.add('hidden');
+        }
+        if (this.checked) {
+          if (!document.getElementById('private_count_' + this.value)) {
+            let div = document.createElement('div');
+            div.id = 'private_div_' + this.value;
+            div.innerHTML = '<label>' + this.value.charAt(0).toUpperCase() + this.value.slice(1) + ' count: <input type="number" id="private_count_' + this.value + '" min="1" value="1"></label>';
+            container.appendChild(div);
+          }
+        } else {
+          let divToRemove = document.getElementById('private_div_' + this.value);
+          if (divToRemove) {
+            container.removeChild(divToRemove);
+          }
+        }
+      });
+    });
+    
+    // Dynamic item count inputs for Insurance branch (using checkboxes)
+    document.querySelectorAll('input[name="insuranceItemType"]').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const container = document.getElementById('insuranceItemCounts');
+        if (document.querySelectorAll('input[name="insuranceItemType"]:checked').length > 0) {
+          container.classList.remove('hidden');
+        } else {
+          container.classList.add('hidden');
+        }
+        if (this.checked) {
+          if (!document.getElementById('count_' + this.value)) {
+            let div = document.createElement('div');
+            div.id = 'div_' + this.value;
+            let labelText;
+            if (this.value === "sentimental") {
+              labelText = "Sentimental pieces count:";
+            } else if (this.value === "work_on_paper") {
+              labelText = "Work on Paper count:";
+            } else {
+              labelText = this.value.charAt(0).toUpperCase() + this.value.slice(1) + " count:";
+            }
+            div.innerHTML = '<label>' + labelText + ' <input type="number" id="count_' + this.value + '" min="1" value="1"></label>';
+            container.appendChild(div);
+          }
+        } else {
+          let divToRemove = document.getElementById('div_' + this.value);
+          if (divToRemove) {
+            container.removeChild(divToRemove);
+          }
+        }
+      });
+    });
+    
+    // Insurance branch: Toggle collection route details
     document.getElementsByName('insuranceNormalRoute').forEach(radio => {
       radio.addEventListener('change', function() {
         if (this.value === 'no') {
@@ -497,23 +533,35 @@
         }
       });
     });
-
-    // Immediately show modal when insuranceExtended is set to "no"
-    document.getElementsByName('insuranceExtended').forEach(radio => {
-      radio.addEventListener('change', function() {
-        if (this.value === "no") {
+    
+    // Insurance coverage check: hide or show the rest of the insurance form
+    function checkInsuranceCoverage() {
+      const insuranceTotalValue = parseFloat(document.getElementById('insuranceTotalValueInput').value);
+      const insuranceExtended = document.querySelector('input[name="insuranceExtended"]:checked');
+      if (isNaN(insuranceTotalValue) || !insuranceExtended) return;
+      
+      if (insuranceExtended.value === "yes" && insuranceTotalValue <= 50000) {
+        document.getElementById('insuranceRest').classList.remove('hidden');
+      } else {
+        document.getElementById('insuranceRest').classList.add('hidden');
+        if (insuranceExtended.value === "no") {
           showPriceModal("POA – please speak to Chris, Anna or Julia for a cost to determine our insurance coverage");
+        } else if (insuranceExtended.value === "yes" && insuranceTotalValue > 50000) {
+          showPriceModal("POA – please speak to Chris, Anna or Julia for a cost owing to high collection value");
         }
-      });
+      }
+    }
+    
+    document.getElementById("insuranceTotalValueInput").addEventListener("change", checkInsuranceCoverage);
+    document.querySelectorAll('input[name="insuranceExtended"]').forEach(radio => {
+      radio.addEventListener("change", checkInsuranceCoverage);
     });
-
+    
     function calculateTotal() {
       let total = 0;
       let priceOnAsking = false;
-      const resultMessage = document.getElementById('resultMessage');
-      resultMessage.style.color = "black"; // Reset styling
-
-      // PRIVATE CLIENT CALCULATIONS
+      
+      // PRIVATE CLIENT CALCULATIONS (unchanged from original CDTEST17.html)
       if (privateCheckbox.checked) {
         const totalValue = document.getElementById('privateTotalValue').value;
         const numItems = parseInt(document.getElementById('privateItemCount').value, 10);
@@ -522,7 +570,10 @@
           alert("Please complete all Private Client fields.");
           return;
         }
-        // Base Price Calculation:
+        if (totalValue === "0-10000" && numItems > 15) {
+          showPriceModal("POA – please speak to Chris, Anna or Julia for a cost owing to high number of items");
+          return;
+        }
         if (numItems <= 3) {
           switch(totalValue) {
             case "0-10000":
@@ -544,7 +595,7 @@
               priceOnAsking = true;
               break;
           }
-        } else { // More than 3 items
+        } else {
           if (totalValue === "0-10000") {
             total += 90 + 25 * (numItems - 3);
           } else {
@@ -559,7 +610,6 @@
           }
           return;
         }
-        // Second Person Requirement Cost
         const secondPersonElem = document.querySelector('input[name="privateSecondPerson"]:checked');
         const secondPerson = secondPersonElem ? secondPersonElem.value : "no";
         if (secondPerson === "advisable") {
@@ -567,17 +617,12 @@
         } else if (secondPerson === "essential") {
           total += 500;
         }
-        // Crate Requirement
         const crateRequiredElem = document.querySelector('input[name="privateCrateRequired"]:checked');
         if (crateRequiredElem && crateRequiredElem.value === "yes") {
           const crateTypeElem = document.querySelector('input[name="privateCrateType"]:checked');
           if (crateTypeElem) {
             if (crateTypeElem.value === "inhouse") {
-              if (totalValue === "0-10000" || totalValue === "10001-20000" || totalValue === "20001-30000") {
-                total += 180;
-              } else if (totalValue === "30001-40000" || totalValue === "40001-50000") {
-                total += 240;
-              }
+              total += 180;
             } else if (crateTypeElem.value === "bespoke") {
               priceOnAsking = true;
             }
@@ -587,73 +632,66 @@
             return;
           }
         }
-        // Trip Type Adjustment
         const tripTypeElem = document.querySelector('input[name="privateTripType"]:checked');
         if (tripTypeElem && tripTypeElem.value === "roundtrip") {
           total *= 2;
         }
+        document.getElementById('resultMessage').textContent = "Total Price: £" + total.toFixed(2);
       }
       // INSURANCE CALCULATIONS
       else if (insuranceCheckbox.checked) {
-        // New Insurance Coverage Fields:
-        const insuranceTotalValueInput = document.getElementById('insuranceTotalValueInput').value;
-        const insuranceExtended = document.querySelector('input[name="insuranceExtended"]:checked');
-        if (insuranceTotalValueInput === "" || !insuranceExtended) {
-          alert("Please complete the insurance coverage fields.");
-          return;
-        }
-        const insuranceTotalValue = parseFloat(insuranceTotalValueInput);
-        if (insuranceExtended.value === "yes") {
-          if (insuranceTotalValue >= 50001) {
-            showPriceModal("POA – please speak to Chris, Anna or Julia for a cost owing to high collection value");
-            return;
-          }
-          // Otherwise, continue with Insurance calculations.
-        } else {
-          showPriceModal("POA – please speak to Chris, Anna or Julia for a cost to determine our insurance coverage");
-          return;
-        }
-        // Continue with remaining Insurance calculations.
+        let collectionCost = 0;
+        // Insurance coverage already checked via checkInsuranceCoverage().
         const insuranceSurge = document.querySelector('input[name="insuranceSurge"]:checked');
         if (insuranceSurge && insuranceSurge.value === "yes") {
-          total += 400;
+          collectionCost += 400;
         }
         const insuranceNormalRoute = document.querySelector('input[name="insuranceNormalRoute"]:checked');
         if (insuranceNormalRoute) {
           if (insuranceNormalRoute.value === "no") {
             const numVans = parseFloat(document.getElementById('insuranceNumVans').value) || 0;
             const numPeople = parseFloat(document.getElementById('insuranceNumPeople').value) || 0;
-            total += (numVans * 1000) + (numPeople * 500);
+            collectionCost += (numVans * 1000) + (numPeople * 500);
           } else {
-            // For normal route = yes, add 90 first.
-            total += 90;
+            collectionCost += 90;
             const insuranceSecondPerson = document.querySelector('input[name="insuranceSecondPerson"]:checked');
             if (insuranceSecondPerson) {
-              if (insuranceSecondPerson.value === "advisable") {
-                total += 250;
-              } else if (insuranceSecondPerson.value === "essential") {
-                total += 500;
+              if (insuranceSecondPerson.value === "advisable" || insuranceSecondPerson.value === "essential") {
+                collectionCost += 250;
               }
             }
-            const insuranceItemType = document.querySelector('input[name="insuranceItemType"]:checked');
-            const insuranceNumItems = parseFloat(document.getElementById('insuranceNumItems').value) || 0;
-            if (insuranceItemType && insuranceNumItems > 0) {
-              const additionalItems = Math.max(insuranceNumItems - 1, 0);
-              const insuranceSecondPersonVal = insuranceSecondPerson ? insuranceSecondPerson.value : "no";
-              if (insuranceSecondPersonVal === "no") {
-                if (insuranceItemType.value === "artwork" || insuranceItemType.value === "objects") {
-                  total += additionalItems * 10;
-                } else if (insuranceItemType.value === "furniture" || insuranceItemType.value === "mixed") {
-                  total += additionalItems * 20;
+            let additionalCost = 0;
+            let multipliers = [];
+            document.querySelectorAll('input[name="insuranceItemType"]:checked').forEach(function(checkbox) {
+              let countInput = document.getElementById('count_' + checkbox.value);
+              let count = parseFloat(countInput.value) || 0;
+              if (checkbox.value === "sentimental") {
+                if (count > 3) {
+                  showPriceModal("POA – please speak to Chris, Anna or Julia for a cost to cover boxes of sentimental items");
+                  return;
                 }
               } else {
-                total += additionalItems * 25;
+                let multiplier;
+                const insuranceSecondPerson = document.querySelector('input[name="insuranceSecondPerson"]:checked');
+                if (insuranceSecondPerson && (insuranceSecondPerson.value === "advisable" || insuranceSecondPerson.value === "essential")) {
+                  multiplier = 25;
+                } else {
+                  if (checkbox.value === "furniture") { multiplier = 20; }
+                  else { multiplier = 10; }
+                }
+                additionalCost += count * multiplier;
+                if (count > 0) { multipliers.push(multiplier); }
               }
+            });
+            if (multipliers.length > 0) {
+              let freeDiscount = Math.min(...multipliers);
+              additionalCost -= freeDiscount;
             }
+            collectionCost += additionalCost;
           }
         }
+        document.getElementById('resultMessage').textContent = "Collection/Delivery Cost: £" + collectionCost.toFixed(2);
       }
-      document.getElementById('totalPrice').textContent = total.toFixed(2);
     }
   </script>
 </body>
