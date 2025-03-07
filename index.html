@@ -161,6 +161,10 @@
     .hidden {
       display: none;
     }
+    /* Extra spacing for Supplier Credit Adjustment section */
+    #supplierCreditAdjustment {
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -333,6 +337,41 @@
     <button type="button" onclick="calculateTotal()">Calculate Total</button>
   </form>
 
+  <!-- Supplier Credit Adjustment Section (appears after insurance calculation) -->
+  <fieldset id="supplierCreditAdjustment" class="hidden">
+    <legend>Supplier Credit Adjustment</legend>
+    <label>
+      Select Supplier:
+      <select id="supplierSelect">
+        <option value="na">n/a</option>
+        <option value="crawford">Crawford</option>
+        <option value="criterion">Criterion</option>
+        <option value="dcp_home_counties">DisasterCare Platinum (DCP) Home Counties</option>
+        <option value="disastercare">DisasterCare - all branches &amp; HQ</option>
+        <option value="esteem">Esteem</option>
+        <option value="independent_restoration">Independent Restoration</option>
+        <option value="mclarens">McLarens</option>
+        <option value="northern_restoration">Northern Restoration</option>
+        <option value="prime">Prime</option>
+        <option value="rainbow_cheshire">Rainbow Cheshire</option>
+        <option value="rainbow_liverpool">Rainbow Liverpool</option>
+        <option value="rainbow_morecambe">Rainbow Morecambe</option>
+        <option value="rainbow_somerset">Rainbow Somerset</option>
+        <option value="rainbow_sw_london">Rainbow South West London</option>
+        <option value="revival_east_anglia">Revival East Anglia</option>
+        <option value="revival_huddersfield">Revival Huddersfield</option>
+        <option value="revival_manchester">Revival Manchester</option>
+        <option value="revival_north_london">Revival North London</option>
+        <option value="revival_southern">Revival Southern</option>
+        <option value="revival_sw_london">Revival South West London</option>
+        <option value="revival_thames_valley">Revival Thames Valley/Oxfordshire/SW Eng</option>
+        <option value="woodgate_clark">Woodgate &amp; Clark</option>
+        <option value="not_on_list">Not on list</option>
+      </select>
+    </label>
+    <button type="button" onclick="applySupplierCredit()">Apply Credit</button>
+  </fieldset>
+
   <h2 id="resultMessage">Total Price: £<span id="totalPrice">0.00</span></h2>
 
   <!-- FAQ Button -->
@@ -405,7 +444,7 @@
       <p>For collections where the total value is less than £50,000 and insurance is being extended, use the form to calculate collection costs. For collections with a higher value or if insurance is not extended, consult Chris, Anna or Julia.</p>
       <p>Please note whether the collection falls under a surge response – if unclear, seek clarity from Julia.</p>
       <p>For the question “is a second person needed for collection”, a judgment call must be made: if it is just for ease, select “advisable”; if it is completely necessary, choose “essential.”</p>
-      <p>Collection and delivery costs are calculated separately unless specified otherwise.</p>
+      <p>Collection and delivery costs are calculated separately.</p>
       <button onclick="closeFaqModal()">Close FAQ</button>
     </div>
   </div>
@@ -462,7 +501,7 @@
       });
     });
     
-    // Dynamic item count inputs for Private Client branch (kept as in original CDTEST17)
+    // Dynamic item count inputs for Private Client branch (as in original CDTEST17)
     document.querySelectorAll('input[name="privateItemType"]').forEach(checkbox => {
       checkbox.addEventListener('change', function() {
         const container = document.getElementById('privateItemCounts');
@@ -535,7 +574,7 @@
       });
     });
     
-    // Insurance coverage check: hide or show the rest of the insurance form
+    // Insurance coverage check: Hide or show the rest of the insurance form.
     function checkInsuranceCoverage() {
       const insuranceTotalValue = parseFloat(document.getElementById('insuranceTotalValueInput').value);
       const insuranceExtended = document.querySelector('input[name="insuranceExtended"]:checked');
@@ -558,11 +597,79 @@
       radio.addEventListener("change", checkInsuranceCoverage);
     });
     
+    // Mapping supplier IDs to credit percentages.
+    const supplierCredits = {
+      na: 0,
+      crawford: 0.10,
+      criterion: 0.00,
+      dcp_home_counties: 0.00,
+      disastercare: 0.00,
+      esteem: 0.00,
+      independent_restoration: 0.00,
+      mclarens: 0.00,
+      northern_restoration: 0.00,
+      prime: 0.00,
+      rainbow_cheshire: 0.20,
+      rainbow_liverpool: 0.20,
+      rainbow_morecambe: 0.20,
+      rainbow_somerset: 0.10,
+      rainbow_sw_london: 0.10,
+      revival_east_anglia: 0.10,
+      revival_huddersfield: 0.00,
+      revival_manchester: 0.10,
+      revival_north_london: 0.10,
+      revival_southern: 0.15,
+      revival_sw_london: 0.10,
+      revival_thames_valley: 0.10,
+      woodgate_clark: 0.00,
+      not_on_list: 0
+    };
+
+    // Function to apply supplier credit after final calculation (for insurance branch).
+    function applySupplierCredit() {
+      const resultElem = document.getElementById('resultMessage');
+      let resultMessage = resultElem.textContent;
+      // Extract only the original cost (the part before any pipe symbol)
+      let baseCostStr = resultMessage.split('|')[0].replace("Collection/Delivery Cost: £", "").trim();
+      let currentCost = parseFloat(baseCostStr);
+      if (isNaN(currentCost)) {
+        alert("Invalid base cost.");
+        return;
+      }
+      const supplier = document.getElementById("supplierSelect").value;
+      if (!supplier) {
+        alert("Please select a supplier.");
+        return;
+      }
+      if (supplier === "not_on_list") {
+        showPriceModal("Check with Julia for supplier credit arrangement");
+        return;
+      }
+      if (supplier === "crawford") {
+        showPriceModal("Check with Julia to determine which insurer is involved");
+        return;
+      }
+      const creditPercentage = supplierCredits[supplier];
+      if (typeof creditPercentage === "undefined") {
+        alert("No credit data available for the selected supplier.");
+        return;
+      }
+      const adjustedCost = currentCost * (1 + creditPercentage);
+      resultElem.textContent =
+        "Collection/Delivery Cost: £" + currentCost.toFixed(2) +
+        " | Adjust Cost (after credit): £" + adjustedCost.toFixed(2);
+    }
+    
+    // Reveal the Supplier Credit Adjustment fieldset after insurance calculation.
+    function revealSupplierCredit() {
+      document.getElementById('supplierCreditAdjustment').classList.remove('hidden');
+    }
+    
     function calculateTotal() {
       let total = 0;
       let priceOnAsking = false;
       
-      // PRIVATE CLIENT CALCULATIONS (unchanged from original CDTEST17.html)
+      // PRIVATE CLIENT CALCULATIONS (unchanged from original CDTEST17)
       if (privateCheckbox.checked) {
         const totalValue = document.getElementById('privateTotalValue').value;
         const numItems = parseInt(document.getElementById('privateItemCount').value, 10);
@@ -679,8 +786,7 @@
                 if (insuranceSecondPerson && (insuranceSecondPerson.value === "advisable" || insuranceSecondPerson.value === "essential")) {
                   multiplier = 25;
                 } else {
-                  if (checkbox.value === "furniture") { multiplier = 20; }
-                  else { multiplier = 10; }
+                  multiplier = (checkbox.value === "furniture") ? 20 : 10;
                 }
                 additionalCost += count * multiplier;
                 if (count > 0) { multipliers.push(multiplier); }
@@ -694,6 +800,7 @@
           }
         }
         document.getElementById('resultMessage').textContent = "Collection/Delivery Cost: £" + collectionCost.toFixed(2);
+        revealSupplierCredit();
       }
     }
   </script>
