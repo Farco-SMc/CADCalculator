@@ -5,46 +5,64 @@
   <title>Collection and Delivery Calculator</title>
   <link href="https://fonts.googleapis.com/css?family=Gill+Sans+Nova:300,400,600|Begum+Semi+Bold" rel="stylesheet">
   <style>
-    /* Base Styles inspired by FARCO Brand Guidelines */
+    /* CSS Variables for Consistency */
+    :root {
+      --font-base: 'Gill Sans Nova', 'Gill Sans', 'Helvetica Neue', sans-serif;
+      --font-heading: 'Begum Semi Bold', 'Gill Sans Nova', 'Gill Sans', sans-serif;
+      --bg-color: #f8f8f8;
+      --text-color: #34434c;
+      --primary-color: #f7941d;
+      --primary-hover: #e58317;
+      --white: #ffffff;
+      --border-color: #ddd;
+      --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      --border-radius: 4px;
+      --input-padding: 8px;
+      --font-size-base: 14px;
+    }
+    
+    /* Base Styles */
     body {
-      background-color: #f8f8f8;
-      font-family: 'Gill Sans Nova', 'Gill Sans', 'Helvetica Neue', sans-serif;
-      color: #34434c; /* dark grey */
+      background-color: var(--bg-color);
+      font-family: var(--font-base);
+      color: var(--text-color);
       margin: 20px;
       padding: 0;
     }
-    /* Header container to center title & logo */
+    
+    /* Header */
     #headerContainer {
       text-align: center;
-      position: relative;
       margin-bottom: 20px;
     }
     #headerContainer h1 {
       display: inline-block;
       margin: 0;
-      font-family: 'Begum Semi Bold', 'Gill Sans Nova', 'Gill Sans', sans-serif;
-      font-size: 36px; /* Adjust as needed */
+      font-family: var(--font-heading);
+      font-size: 36px;
       vertical-align: middle;
-      color: #34434c;
+      color: var(--text-color);
     }
     #logo {
       display: inline-block;
       vertical-align: middle;
       margin-left: 20px;
-      height: 36px; /* same as the h1 height for scale */
+      height: 36px;
     }
     #logo img {
       height: 100%;
       width: auto;
     }
+    
+    /* Form Container */
     form {
-      background-color: #ffffff;
-      border: 1px solid #ddd;
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
       padding: 20px;
       max-width: 800px;
       margin: 0 auto;
-      border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
     }
     fieldset {
       border: none;
@@ -52,60 +70,81 @@
       padding: 0;
     }
     fieldset legend {
-      font-family: 'Begum Semi Bold', 'Gill Sans Nova', 'Gill Sans', sans-serif;
+      font-family: var(--font-heading);
       font-size: 18px;
       margin-bottom: 10px;
-      color: #34434c;
+      color: var(--text-color);
       text-align: left;
     }
     label {
       display: block;
       margin-top: 8px;
-      font-size: 14px;
+      font-size: var(--font-size-base);
     }
+    
     input[type="number"],
     select {
       width: 100%;
-      padding: 8px;
-      font-size: 14px;
+      padding: var(--input-padding);
+      font-size: var(--font-size-base);
       border: 1px solid #ccc;
-      border-radius: 2px;
+      border-radius: var(--border-radius);
       margin-top: 4px;
     }
     input[type="radio"],
     input[type="checkbox"] {
       margin-right: 5px;
     }
+    
     button {
-      background-color: #f7941d; /* FARCO Orange */
-      color: #fff;
+      background-color: var(--primary-color);
+      color: var(--white);
       border: none;
       padding: 10px 20px;
       font-size: 16px;
-      border-radius: 2px;
+      border-radius: var(--border-radius);
       cursor: pointer;
       margin-top: 20px;
       width: 100%;
     }
     button:hover {
-      background-color: #e58317;
+      background-color: var(--primary-hover);
     }
-    /* Center the result message */
+    
+    /* Results Container */
     #resultMessage {
-      text-align: center;
+      display: none;
       margin-top: 20px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
     }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .result-label {
+      font-weight: bold;
+    }
+    .result-value {
+      font-weight: normal;
+      color: var(--primary-color);
+    }
+    
     /* FAQ Button */
     #faqButton {
-      background-color: #34434c;
-      font-size: 14px;
+      background-color: var(--text-color);
+      font-size: var(--font-size-base);
       padding: 8px 16px;
       width: auto;
       margin: 20px auto;
       display: block;
     }
-    /* Modal styles for both POA and FAQ modals */
-    #priceModal, #faqModal {
+    
+    /* Modal Styles */
+    #priceModal,
+    #faqModal {
       position: fixed;
       top: 0; 
       left: 0;
@@ -117,40 +156,41 @@
       align-items: center;
       z-index: 1000;
     }
-    #priceModal .modal-content, #faqModal .modal-content {
-      background: #fff;
+    #priceModal .modal-content,
+    #faqModal .modal-content {
+      background: var(--white);
       padding: 20px;
-      border-radius: 4px;
+      border-radius: var(--border-radius);
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       max-width: 90%;
-      font-family: 'Gill Sans Nova', 'Gill Sans', sans-serif;
+      font-family: var(--font-base);
     }
-    /* POA modal: center text */
     #priceModal .modal-content {
       text-align: center;
     }
-    #priceModal button, #faqModal button {
-      background-color: #f7941d;
-      color: #fff;
+    #priceModal button,
+    #faqModal button {
+      background-color: var(--primary-color);
+      color: var(--white);
       border: none;
       padding: 8px 16px;
       margin-top: 10px;
       cursor: pointer;
+      border-radius: var(--border-radius);
     }
-    /* FAQ modal: left-aligned text, scrollable content */
     #faqModal .modal-content {
       text-align: left;
       max-height: 80vh;
       overflow-y: auto;
     }
-    /* Table in FAQ */
     #faqModal table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
     }
-    #faqModal th, #faqModal td {
-      border: 1px solid #ddd;
+    #faqModal th,
+    #faqModal td {
+      border: 1px solid var(--border-color);
       padding: 8px;
       text-align: left;
     }
@@ -158,10 +198,14 @@
       background-color: #f2f2f2;
       font-weight: bold;
     }
+    
+    /* Utility Classes */
     .hidden {
       display: none;
     }
-    /* Extra spacing for Supplier Credit Adjustment section */
+    
+    /* Extra Spacing */
+    #assessmentSection,
     #supplierCreditAdjustment {
       margin-top: 30px;
     }
@@ -174,6 +218,7 @@
       <img src="logo2.jpg" alt="Company Logo">
     </div>
   </div>
+  
   <form id="calculatorForm">
     <!-- Client Type Section -->
     <fieldset>
@@ -188,7 +233,7 @@
       </label>
     </fieldset>
 
-    <!-- Private Client Section (kept as in your original CDTEST17.html) -->
+    <!-- Private Client Section -->
     <div id="privateSection" class="hidden">
       <fieldset>
         <legend>Private Client Details</legend>
@@ -242,6 +287,11 @@
           <input type="radio" name="privateCrateType" value="inhouse"> In-house
           <input type="radio" name="privateCrateType" value="bespoke"> Bespoke
         </label>
+        <!-- New field to specify number of crates; shown only when item count > 1 -->
+        <label id="crateCountLabel" class="hidden">
+          Number of crates needed:
+          <input type="number" id="privateCrateCount" min="1" value="1">
+        </label>
       </fieldset>
       <fieldset>
         <legend>Trip Type</legend>
@@ -269,7 +319,6 @@
           <input type="radio" name="insuranceExtended" value="no"> No
         </label>
       </fieldset>
-      <!-- Wrap the rest of the insurance form in a container -->
       <div id="insuranceRest" class="hidden">
         <fieldset>
           <legend>Insurance Details</legend>
@@ -335,44 +384,74 @@
     </div>
 
     <button type="button" onclick="calculateTotal()">Calculate Total</button>
+
+    <!-- Assessment and Supplier Credit Sections -->
+    <fieldset id="assessmentSection" class="hidden">
+      <legend>Assessment Costs (Optional)</legend>
+      <p>Include costs for assessment based on the item details provided?</p>
+      <label>
+        <input type="radio" name="assessmentOption" value="no" checked> No
+      </label>
+      <label>
+        <input type="radio" name="assessmentOption" value="yes"> Yes
+      </label>
+      <button type="button" onclick="processAssessment()">Proceed</button>
+    </fieldset>
+
+    <fieldset id="supplierCreditAdjustment" class="hidden">
+      <legend>Supplier Credit Adjustment</legend>
+      <label>
+        Select Supplier:
+        <select id="supplierSelect">
+          <option value="na">n/a</option>
+          <option value="crawford">Crawford</option>
+          <option value="criterion">Criterion</option>
+          <option value="dcp_home_counties">DisasterCare Platinum (DCP) Home Counties</option>
+          <option value="disastercare">DisasterCare - all branches &amp; HQ</option>
+          <option value="esteem">Esteem</option>
+          <option value="independent_restoration">Independent Restoration</option>
+          <option value="mclarens">McLarens</option>
+          <option value="northern_restoration">Northern Restoration</option>
+          <option value="prime">Prime</option>
+          <option value="rainbow_cheshire">Rainbow Cheshire</option>
+          <option value="rainbow_liverpool">Rainbow Liverpool</option>
+          <option value="rainbow_morecambe">Rainbow Morecambe</option>
+          <option value="rainbow_somerset">Rainbow Somerset</option>
+          <option value="rainbow_sw_london">Rainbow South West London</option>
+          <option value="revival_east_anglia">Revival East Anglia</option>
+          <option value="revival_huddersfield">Revival Huddersfield</option>
+          <option value="revival_manchester">Revival Manchester</option>
+          <option value="revival_north_london">Revival North London</option>
+          <option value="revival_southern">Revival Southern</option>
+          <option value="revival_sw_london">Revival South West London</option>
+          <option value="revival_thames_valley">Revival Thames Valley/Oxfordshire/SW Eng</option>
+          <option value="woodgate_clark">Woodgate &amp; Clark</option>
+          <option value="not_on_list">Not on list</option>
+        </select>
+      </label>
+      <button type="button" onclick="applySupplierCredit()">Apply Credit</button>
+    </fieldset>
+
+    <!-- Results Display (hidden by default) -->
+    <div id="resultMessage" class="hidden">
+      <div class="result-row">
+        <span class="result-label">Collection/Delivery Total:</span>
+        <span id="collectionTotal" class="result-value">£0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Assessment Total:</span>
+        <span id="assessmentTotal" class="result-value">£0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Combined Total:</span>
+        <span id="combinedTotal" class="result-value">£0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Total with Credit:</span>
+        <span id="creditTotal" class="result-value">£0.00</span>
+      </div>
+    </div>
   </form>
-
-  <!-- Supplier Credit Adjustment Section (appears after insurance calculation) -->
-  <fieldset id="supplierCreditAdjustment" class="hidden">
-    <legend>Supplier Credit Adjustment</legend>
-    <label>
-      Select Supplier:
-      <select id="supplierSelect">
-        <option value="na">n/a</option>
-        <option value="crawford">Crawford</option>
-        <option value="criterion">Criterion</option>
-        <option value="dcp_home_counties">DisasterCare Platinum (DCP) Home Counties</option>
-        <option value="disastercare">DisasterCare - all branches &amp; HQ</option>
-        <option value="esteem">Esteem</option>
-        <option value="independent_restoration">Independent Restoration</option>
-        <option value="mclarens">McLarens</option>
-        <option value="northern_restoration">Northern Restoration</option>
-        <option value="prime">Prime</option>
-        <option value="rainbow_cheshire">Rainbow Cheshire</option>
-        <option value="rainbow_liverpool">Rainbow Liverpool</option>
-        <option value="rainbow_morecambe">Rainbow Morecambe</option>
-        <option value="rainbow_somerset">Rainbow Somerset</option>
-        <option value="rainbow_sw_london">Rainbow South West London</option>
-        <option value="revival_east_anglia">Revival East Anglia</option>
-        <option value="revival_huddersfield">Revival Huddersfield</option>
-        <option value="revival_manchester">Revival Manchester</option>
-        <option value="revival_north_london">Revival North London</option>
-        <option value="revival_southern">Revival Southern</option>
-        <option value="revival_sw_london">Revival South West London</option>
-        <option value="revival_thames_valley">Revival Thames Valley/Oxfordshire/SW Eng</option>
-        <option value="woodgate_clark">Woodgate &amp; Clark</option>
-        <option value="not_on_list">Not on list</option>
-      </select>
-    </label>
-    <button type="button" onclick="applySupplierCredit()">Apply Credit</button>
-  </fieldset>
-
-  <h2 id="resultMessage">Total Price: £<span id="totalPrice">0.00</span></h2>
 
   <!-- FAQ Button -->
   <div style="text-align: center; margin-top: 20px;">
@@ -387,7 +466,7 @@
     </div>
   </div>
 
-  <!-- Updated FAQ Modal -->
+  <!-- FAQ Modal -->
   <div id="faqModal" class="hidden">
     <div class="modal-content">
       <h2>FAQ</h2>
@@ -450,6 +529,26 @@
   </div>
 
   <script>
+    // Helper function to reset the calculated total display and hide the results container
+    function resetCalculation() {
+      document.getElementById('collectionTotal').textContent = "£0.00";
+      document.getElementById('assessmentTotal').textContent = "£0.00";
+      document.getElementById('combinedTotal').textContent = "£0.00";
+      document.getElementById('creditTotal').textContent = "£0.00";
+      document.getElementById('resultMessage').style.display = "none";
+    }
+    
+    // Helper Functions to Reset Sections
+    function resetInsuranceFields() {
+      // Hide insurance-related sections
+      document.getElementById('assessmentSection').classList.add('hidden');
+      document.getElementById('supplierCreditAdjustment').classList.add('hidden');
+    }
+
+    function resetPrivateFields() {
+      // Reset or clear private-specific dynamic sections if necessary.
+    }
+
     // POA modal functions
     function showPriceModal(message) {
       document.getElementById('modalText').innerHTML = message;
@@ -466,24 +565,30 @@
       document.getElementById('faqModal').style.display = "none";
     }
     
-    // Toggle client type sections
+    // Toggle client type sections with reset functionality
     const privateCheckbox = document.getElementById('clientPrivate');
     const insuranceCheckbox = document.getElementById('clientInsurance');
+
     privateCheckbox.addEventListener('change', function() {
       if (this.checked) {
         insuranceCheckbox.checked = false;
         document.getElementById('privateSection').classList.remove('hidden');
         document.getElementById('insuranceSection').classList.add('hidden');
+        resetInsuranceFields(); // Hide insurance-specific sections
+        resetCalculation();     // Reset the calculated totals and hide results
       } else {
         document.getElementById('privateSection').classList.add('hidden');
       }
     });
+
     insuranceCheckbox.addEventListener('change', function() {
       if (this.checked) {
         privateCheckbox.checked = false;
         document.getElementById('insuranceSection').classList.remove('hidden');
         document.getElementById('privateSection').classList.add('hidden');
+        resetPrivateFields(); // Reset private-specific sections if necessary
         checkInsuranceCoverage();
+        resetCalculation();   // Reset the calculated totals and hide results
       } else {
         document.getElementById('insuranceSection').classList.add('hidden');
       }
@@ -501,7 +606,17 @@
       });
     });
     
-    // Dynamic item count inputs for Private Client branch (as in original CDTEST17)
+    // Display crate count field only if item count is more than 1
+    document.getElementById('privateItemCount').addEventListener('change', function() {
+      const crateCountLabel = document.getElementById('crateCountLabel');
+      if (parseInt(this.value, 10) > 1) {
+        crateCountLabel.classList.remove('hidden');
+      } else {
+        crateCountLabel.classList.add('hidden');
+      }
+    });
+    
+    // Dynamic item count inputs for Private Client branch (if needed)
     document.querySelectorAll('input[name="privateItemType"]').forEach(checkbox => {
       checkbox.addEventListener('change', function() {
         const container = document.getElementById('privateItemCounts');
@@ -526,7 +641,7 @@
       });
     });
     
-    // Dynamic item count inputs for Insurance branch (using checkboxes)
+    // Dynamic item count inputs for Insurance branch
     document.querySelectorAll('input[name="insuranceItemType"]').forEach(checkbox => {
       checkbox.addEventListener('change', function() {
         const container = document.getElementById('insuranceItemCounts');
@@ -559,22 +674,27 @@
       });
     });
     
-    // Insurance branch: Toggle collection route details
+    // Insurance branch: Toggle collection route details and hide assessment & supplier credit if dedicated collection
     document.getElementsByName('insuranceNormalRoute').forEach(radio => {
       radio.addEventListener('change', function() {
         if (this.value === 'no') {
           document.getElementById('insuranceDedicated').classList.remove('hidden');
           document.getElementById('insuranceStandardDetails').classList.add('hidden');
           document.getElementById('insuranceItemDetails').classList.add('hidden');
+          // Hide assessment and supplier credit sections when a dedicated collection is needed
+          document.getElementById('assessmentSection').classList.add('hidden');
+          document.getElementById('supplierCreditAdjustment').classList.add('hidden');
         } else {
           document.getElementById('insuranceDedicated').classList.add('hidden');
           document.getElementById('insuranceStandardDetails').classList.remove('hidden');
           document.getElementById('insuranceItemDetails').classList.remove('hidden');
+          // Reveal assessment section for standard collections
+          document.getElementById('assessmentSection').classList.remove('hidden');
         }
       });
     });
     
-    // Insurance coverage check: Hide or show the rest of the insurance form.
+    // Insurance coverage check
     function checkInsuranceCoverage() {
       const insuranceTotalValue = parseFloat(document.getElementById('insuranceTotalValueInput').value);
       const insuranceExtended = document.querySelector('input[name="insuranceExtended"]:checked');
@@ -625,51 +745,12 @@
       not_on_list: 0
     };
 
-    // Function to apply supplier credit after final calculation (for insurance branch).
-    function applySupplierCredit() {
-      const resultElem = document.getElementById('resultMessage');
-      let resultMessage = resultElem.textContent;
-      // Extract only the original cost (the part before any pipe symbol)
-      let baseCostStr = resultMessage.split('|')[0].replace("Collection/Delivery Cost: £", "").trim();
-      let currentCost = parseFloat(baseCostStr);
-      if (isNaN(currentCost)) {
-        alert("Invalid base cost.");
-        return;
-      }
-      const supplier = document.getElementById("supplierSelect").value;
-      if (!supplier) {
-        alert("Please select a supplier.");
-        return;
-      }
-      if (supplier === "not_on_list") {
-        showPriceModal("Check with Julia for supplier credit arrangement");
-        return;
-      }
-      if (supplier === "crawford") {
-        showPriceModal("Check with Julia to determine which insurer is involved");
-        return;
-      }
-      const creditPercentage = supplierCredits[supplier];
-      if (typeof creditPercentage === "undefined") {
-        alert("No credit data available for the selected supplier.");
-        return;
-      }
-      const adjustedCost = currentCost * (1 + creditPercentage);
-      resultElem.textContent =
-        "Collection/Delivery Cost: £" + currentCost.toFixed(2) +
-        " | Adjust Cost (after credit): £" + adjustedCost.toFixed(2);
-    }
-    
-    // Reveal the Supplier Credit Adjustment fieldset after insurance calculation.
-    function revealSupplierCredit() {
-      document.getElementById('supplierCreditAdjustment').classList.remove('hidden');
-    }
-    
+    // Calculate Total function for Private and Insurance branches
     function calculateTotal() {
       let total = 0;
       let priceOnAsking = false;
       
-      // PRIVATE CLIENT CALCULATIONS (unchanged from original CDTEST17)
+      // PRIVATE CLIENT CALCULATIONS
       if (privateCheckbox.checked) {
         const totalValue = document.getElementById('privateTotalValue').value;
         const numItems = parseInt(document.getElementById('privateItemCount').value, 10);
@@ -728,9 +809,16 @@
         const crateRequiredElem = document.querySelector('input[name="privateCrateRequired"]:checked');
         if (crateRequiredElem && crateRequiredElem.value === "yes") {
           const crateTypeElem = document.querySelector('input[name="privateCrateType"]:checked');
+          // Get number of crates (default to 1 if not specified)
+          let crateCount = 1;
+          if (document.getElementById('privateCrateCount')) {
+            crateCount = parseInt(document.getElementById('privateCrateCount').value, 10) || 1;
+            // Cap crateCount to the number of items collected
+            crateCount = Math.min(crateCount, numItems);
+          }
           if (crateTypeElem) {
             if (crateTypeElem.value === "inhouse") {
-              total += 180;
+              total += 180 * crateCount;
             } else if (crateTypeElem.value === "bespoke") {
               priceOnAsking = true;
             }
@@ -744,12 +832,20 @@
         if (tripTypeElem && tripTypeElem.value === "roundtrip") {
           total *= 2;
         }
-        document.getElementById('resultMessage').textContent = "Total Price: £" + total.toFixed(2);
+        
+        // Update results for Private branch:
+        document.getElementById('collectionTotal').textContent = "£" + total.toFixed(2);
+        
+        // Hide the assessment, combined and supplier credit rows for private clients
+        document.getElementById('assessmentTotal').parentNode.style.display = "none";
+        document.getElementById('combinedTotal').parentNode.style.display = "none";
+        document.getElementById('creditTotal').parentNode.style.display = "none";
+        
+        document.getElementById('resultMessage').style.display = "block";
       }
       // INSURANCE CALCULATIONS
       else if (insuranceCheckbox.checked) {
         let collectionCost = 0;
-        // Insurance coverage already checked via checkInsuranceCoverage()
         const insuranceSurge = document.querySelector('input[name="insuranceSurge"]:checked');
         if (insuranceSurge && insuranceSurge.value === "yes") {
           collectionCost += 400;
@@ -757,10 +853,25 @@
         const insuranceNormalRoute = document.querySelector('input[name="insuranceNormalRoute"]:checked');
         if (insuranceNormalRoute) {
           if (insuranceNormalRoute.value === "no") {
+            // Dedicated collection – only display Collection/Delivery Total
             const numVans = parseFloat(document.getElementById('insuranceNumVans').value) || 0;
             const numPeople = parseFloat(document.getElementById('insuranceNumPeople').value) || 0;
             collectionCost += (numVans * 1000) + (numPeople * 500);
+            document.getElementById('collectionTotal').textContent = "£" + collectionCost.toFixed(2);
+            // Hide extra rows for dedicated collections
+            document.getElementById('assessmentTotal').parentNode.style.display = "none";
+            document.getElementById('combinedTotal').parentNode.style.display = "none";
+            document.getElementById('creditTotal').parentNode.style.display = "none";
+            // Also ensure assessment and supplier credit sections remain hidden
+            document.getElementById('assessmentSection').classList.add('hidden');
+            document.getElementById('supplierCreditAdjustment').classList.add('hidden');
+            document.getElementById('resultMessage').style.display = "block";
           } else {
+            // Standard route – full breakdown
+            // Ensure extra rows are visible
+            document.getElementById('assessmentTotal').parentNode.style.display = "flex";
+            document.getElementById('combinedTotal').parentNode.style.display = "flex";
+            document.getElementById('creditTotal').parentNode.style.display = "flex";
             collectionCost += 90;
             const insuranceSecondPerson = document.querySelector('input[name="insuranceSecondPerson"]:checked');
             if (insuranceSecondPerson) {
@@ -797,10 +908,108 @@
               additionalCost -= freeDiscount;
             }
             collectionCost += additionalCost;
+            document.getElementById('collectionTotal').textContent = "£" + collectionCost.toFixed(2);
+            document.getElementById('assessmentTotal').textContent = "£0.00";
+            document.getElementById('combinedTotal').textContent = "£" + collectionCost.toFixed(2);
+            document.getElementById('creditTotal').textContent = "£" + collectionCost.toFixed(2);
+            document.getElementById('resultMessage').style.display = "block";
           }
         }
-        document.getElementById('resultMessage').textContent = "Collection/Delivery Cost: £" + collectionCost.toFixed(2);
-        revealSupplierCredit();
+      }
+    }
+    
+    // Streamlined Assessment processing using a single "Proceed" button.
+    function processAssessment() {
+      const option = document.querySelector('input[name="assessmentOption"]:checked').value;
+      let assessmentCost = 0;
+      if (option === "yes") {
+        let flatFee = 100; // Added once for all item types
+        let additional = 0;
+        const totalValue = parseFloat(document.getElementById('insuranceTotalValueInput').value) || 0;
+        const checkedTypes = Array.from(document.querySelectorAll('input[name="insuranceItemType"]:checked')).map(cb => cb.value);
+        let isObjectsOnly = (checkedTypes.length === 1 && (checkedTypes[0] === "object" || checkedTypes[0] === "work_on_paper"));
+        const types = ["painting", "work_on_paper", "object", "furniture", "sentimental"];
+        types.forEach(function(type) {
+          const checkbox = document.querySelector('input[name="insuranceItemType"][value="'+type+'"]');
+          if (checkbox && checkbox.checked) {
+            const countInput = document.getElementById('count_' + type);
+            let count = parseInt(countInput.value, 10);
+            if (isNaN(count) || count < 1) count = 1;
+            let multiplier = 0;
+            switch(type) {
+              case "painting":
+                multiplier = 65;
+                break;
+              case "work_on_paper":
+                multiplier = 25;
+                if (isObjectsOnly && totalValue > 10000) {
+                  multiplier = 65;
+                }
+                break;
+              case "object":
+                multiplier = 25;
+                if (isObjectsOnly && totalValue > 10000) {
+                  multiplier = 65;
+                }
+                break;
+              case "furniture":
+                multiplier = 25;
+                break;
+              case "sentimental":
+                multiplier = 25;
+                break;
+            }
+            additional += (count - 1) * multiplier;
+          }
+        });
+        assessmentCost = flatFee + additional;
+      }
+      // Get the current collection/delivery cost from the insurance calculation
+      let collectionStr = document.getElementById('collectionTotal').textContent;
+      let collectionCost = parseFloat(collectionStr.replace("£", "")) || 0;
+      let combinedTotal = collectionCost + assessmentCost;
+      document.getElementById('assessmentTotal').textContent = "£" + assessmentCost.toFixed(2);
+      document.getElementById('combinedTotal').textContent = "£" + combinedTotal.toFixed(2);
+      document.getElementById('creditTotal').textContent = "£" + combinedTotal.toFixed(2);
+      revealSupplierCredit();
+    }
+    
+    // Reveal Supplier Credit section
+    function revealSupplierCredit() {
+      document.getElementById('supplierCreditAdjustment').classList.remove('hidden');
+    }
+    
+    // Apply Supplier Credit to the full combined total
+    function applySupplierCredit() {
+      let combinedStr = document.getElementById('combinedTotal').textContent;
+      let combinedCost = parseFloat(combinedStr.replace("£", ""));
+      if (isNaN(combinedCost)) {
+        alert("Invalid base cost.");
+        return;
+      }
+      const supplier = document.getElementById("supplierSelect").value;
+      if (!supplier) {
+        alert("Please select a supplier.");
+        return;
+      }
+      if (supplier === "not_on_list") {
+        showPriceModal("Check with Julia for supplier credit arrangement");
+        return;
+      }
+      if (supplier === "crawford") {
+        showPriceModal("Check with Julia to determine which insurer is involved");
+        return;
+      }
+      const creditPercentage = supplierCredits[supplier];
+      if (typeof creditPercentage === "undefined") {
+        alert("No credit data available for the selected supplier.");
+        return;
+      }
+      if (creditPercentage === 0) {
+        document.getElementById('creditTotal').textContent = "no credit";
+      } else {
+        const adjustedCost = combinedCost * (1 + creditPercentage);
+        document.getElementById('creditTotal').textContent = "£" + adjustedCost.toFixed(2);
       }
     }
   </script>
