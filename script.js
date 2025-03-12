@@ -395,25 +395,27 @@ function calculateTotal() {
   }
 }
 
-// Streamlined Assessment processing using a single "Proceed" button.
+// Updated Assessment processing function for Insurance branch
 function processAssessment() {
   const option = document.querySelector('input[name="assessmentOption"]:checked').value;
   let assessmentCost = 0;
   if (option === "yes") {
-    let flatFee = 100; // Added once for all item types
+    let flatFee = 100; // First item cost
     let additional = 0;
     const totalValue = parseFloat(document.getElementById('insuranceTotalValueInput').value) || 0;
     const checkedTypes = Array.from(document.querySelectorAll('input[name="insuranceItemType"]:checked')).map(cb => cb.value);
     let isObjectsOnly = (checkedTypes.length === 1 && (checkedTypes[0] === "object" || checkedTypes[0] === "work_on_paper"));
     const types = ["painting", "work_on_paper", "object", "furniture", "sentimental"];
+    let firstItemUsed = false;  // Flag to ensure only one free item is subtracted overall
+
     types.forEach(function(type) {
-      const checkbox = document.querySelector('input[name="insuranceItemType"][value="'+type+'"]');
+      const checkbox = document.querySelector('input[name="insuranceItemType"][value="' + type + '"]');
       if (checkbox && checkbox.checked) {
         const countInput = document.getElementById('count_' + type);
         let count = parseInt(countInput.value, 10);
         if (isNaN(count) || count < 1) count = 1;
         let multiplier = 0;
-        switch(type) {
+        switch (type) {
           case "painting":
             multiplier = 65;
             break;
@@ -436,7 +438,12 @@ function processAssessment() {
             multiplier = 25;
             break;
         }
-        additional += (count - 1) * multiplier;
+        // Subtract the free item only once (for the very first category encountered)
+        if (!firstItemUsed && count > 0) {
+          count = count - 1;
+          firstItemUsed = true;
+        }
+        additional += count * multiplier;
       }
     });
     assessmentCost = flatFee + additional;
